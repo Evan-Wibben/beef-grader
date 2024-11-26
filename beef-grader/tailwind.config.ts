@@ -8,10 +8,13 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
+      "colors": {
+        // custom color pallet generated here: https://www.tints.dev/brand/4DD3FF
+        "brandGreen": "#5a822b",
+        "brandBrown": "#797370",
+        "brandGray": "#566268",
+        "brandLightGreen": "#f7f8f3",
+      }
     },
   },
   plugins: [],

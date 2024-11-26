@@ -1,14 +1,21 @@
 import React from 'react';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
+import { CowProvider } from './context/CowContext';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+import './globals.css';
+
+export default function RootLayout({children,}: {
+    children: React.ReactNode
+}) {
     return (
         <html lang="en">
         <body>
-        <Navigation/>
-        <main>{children}</main>
-        <Footer/>
+        <CowProvider>
+            <Navigation />
+            <main>{children}</main>
+            <Footer />
+        </CowProvider>
         </body>
         </html>
     );
