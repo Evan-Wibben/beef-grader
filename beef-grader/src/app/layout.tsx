@@ -2,8 +2,14 @@ import React from 'react';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import { CowProvider } from './context/CowContext';
+import { PastureProvider } from './context/PastureContext';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
 
 import './globals.css';
+
+if (typeof window !== 'undefined') {
+    defineCustomElements(window);
+}
 
 export default function RootLayout({children,}: {
     children: React.ReactNode
@@ -12,9 +18,11 @@ export default function RootLayout({children,}: {
         <html lang="en">
         <body>
         <CowProvider>
-            <Navigation />
-            <main>{children}</main>
-            <Footer />
+            <PastureProvider>
+                <Navigation />
+                <main>{children}</main>
+                <Footer />
+            </PastureProvider>
         </CowProvider>
         </body>
         </html>

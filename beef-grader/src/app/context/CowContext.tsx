@@ -37,3 +37,5 @@ export const useCowContext = () => {
     }
     return context;
 };
+
+// This code is used to store the cow submissions in a state array.

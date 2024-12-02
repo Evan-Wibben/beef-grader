@@ -1,29 +1,38 @@
-'use client';
-
-import React, { useState } from 'react';
+import { usePastureContext } from '../context/PastureContext';
+import { useState, useRef } from 'react';
 
 interface CowDetailsProps {
     onSubmit: (details: { breed: string; age: number; pasture: string; notes: string }) => void;
 }
 
 const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit }) => {
-    const [breed, setBreed] = useState<string>('');
+    const { pastures } = usePastureContext();
+    const [breed, setBreed] = useState('');
     const [age, setAge] = useState<number | ''>('');
-    const [pasture, setPasture] = useState<string>('');
-    const [notes, setNotes] = useState<string>('');
+    const [pastureName, setPastureName] = useState('');
+    const [notes, setNotes] = useState('');
+
+    // Create a ref for the form
+    const formRef = useRef<HTMLFormElement>(null);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit({ breed, age: Number(age), pasture, notes });
+        onSubmit({ breed, age: Number(age), pasture: pastureName, notes });
+
+        // Reset form fields
         setBreed('');
         setAge('');
-        setPasture('');
+        setPastureName('');
         setNotes('');
+
+        // Optionally reset the form using ref
+        if (formRef.current) {
+            formRef.current.reset(); // This will clear all inputs in the form
+        }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Form fields for breed, age, pasture, and notes */}
+        <form onSubmit={handleSubmit} className="space-y-4" ref={formRef}>
             <div>
                 <label className="block text-sm font-medium text-gray-700">Breed</label>
                 <input
@@ -49,15 +58,15 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit }) => {
             <div>
                 <label className="block text-sm font-medium text-gray-700">Pasture</label>
                 <select
-                    value={pasture}
-                    onChange={(e) => setPasture(e.target.value)}
+                    value={pastureName}
+                    onChange={(e) => setPastureName(e.target.value)}
                     className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                     required
                 >
                     <option value="">Select a pasture</option>
-                    <option value="Pasture 1">Pasture 1</option>
-                    <option value="Pasture 2">Pasture 2</option>
-                    <option value="Pasture 3">Pasture 3</option>
+                    {pastures.map((pasture) => (
+                        <option key={pasture.id} value={pasture.name}>{pasture.name}</option>
+                    ))}
                 </select>
             </div>
 
@@ -71,7 +80,8 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit }) => {
                 />
             </div>
 
-            <button type="submit" className="bg-brandGreen text-white px-4 py-2 rounded-lg shadow-md hover:bg-brandBrown transition duration-300">
+            <button type="submit"
+                    className="bg-brandGreen text-white px-4 py-2 rounded-lg shadow-md hover:bg-brandBrown transition duration-300">
                 Submit
             </button>
         </form>
