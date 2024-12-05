@@ -38,7 +38,7 @@ const Navigation: React.FC = () => {
     };
 
     return (
-        <nav className="bg-brandGreen text-white shadow-lg">
+        <nav className="bg-brandGreen text-white shadow-lg pt-10">
             <div className="block-container py-4">
                 <div className="flex justify-between items-center">
                     <Link href="/" className="flex items-center space-x-3">
