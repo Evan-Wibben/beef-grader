@@ -5,16 +5,47 @@ import { Camera, CameraResultType } from '@capacitor/camera';
 
 const CameraComponent: React.FC = () => {
     const [image, setImage] = useState<string | null>(null);
+    const [classification, setClassification] = useState<string | null>(null);
 
     const takePhoto = async () => {
-        const image = await Camera.getPhoto({
-            quality: 90,
-            allowEditing: false,
-            resultType: CameraResultType.Uri,
-        });
+        try {
+            const image = await Camera.getPhoto({
+                quality: 90,
+                allowEditing: false,
+                resultType: CameraResultType.Base64,
+            });
 
-        // Set the image URI to state
-        setImage(image.webPath || null);
+            // Set the image base64 to state
+            setImage(image.base64String || null);
+
+            // Send the image to the backend
+            if (image.base64String) {
+                await sendImageToBackend(image.base64String);
+            }
+        } catch (error) {
+            console.error('Error taking photo:', error);
+        }
+    };
+
+    const sendImageToBackend = async (imageBase64: string) => {
+        try {
+            const response = await fetch('http://localhost:8080/api/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ image: imageBase64 }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const result = await response.json();
+            setClassification(result.predicted_class);
+        } catch (error) {
+            console.error('Error sending image to backend:', error);
+        }
     };
 
     return (
@@ -28,7 +59,12 @@ const CameraComponent: React.FC = () => {
             </button>
             {image && (
                 <div className="mt-4">
-                    <img src={image} alt="Captured" className="rounded-lg shadow-lg" />
+                    <img src={`data:image/jpeg;base64,${image}`} alt="Captured" className="rounded-lg shadow-lg" />
+                </div>
+            )}
+            {classification && (
+                <div className="mt-4">
+                    <p className="text-lg font-semibold">Classification: {classification}</p>
                 </div>
             )}
         </div>

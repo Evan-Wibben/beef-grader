@@ -11,6 +11,7 @@ const Hero: React.FC = () => (
                 fill
                 style={{ objectFit: 'cover' }}
                 className="mix-blend-normal"
+                priority
             />
             <div className="absolute inset-0 bg-brandGreen/30 to-transparent"></div>
             <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-4">

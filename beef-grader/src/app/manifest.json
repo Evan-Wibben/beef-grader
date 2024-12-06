@@ -1,0 +1,6 @@
+{
+    "name": "BCS Grader",
+    "short_name": "BCS",
+    "description": "This is used to keep track of the BCS of beef cows. Use the pasture to see the analitics of the cows in a pasture.",
+    "start_url": "/"
+  }
