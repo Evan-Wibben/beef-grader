@@ -1,38 +1,83 @@
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { usePastureContext } from '../context/PastureContext';
-import { useState, useRef } from 'react';
 
 interface CowDetailsProps {
-    onSubmit: (details: { breed: string; age: number; pasture: string; notes: string }) => void;
+    onSubmit: (details: CowDetailsType) => void;
+    classification: string | null;
 }
 
-const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit }) => {
+interface CowDetailsType {
+    breed: string;
+    age: number | null;
+    pasture: string | null;
+    notes: string | null;
+    bcs_score: string | null;
+}
+
+const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification }) => {
     const { pastures } = usePastureContext();
     const [breed, setBreed] = useState('');
     const [age, setAge] = useState<number | ''>('');
     const [pastureName, setPastureName] = useState('');
     const [notes, setNotes] = useState('');
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    // Create a ref for the form
     const formRef = useRef<HTMLFormElement>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    // Reset form when classification changes
+    useEffect(() => {
+        if (!classification) {
+            setBreed('');
+            setAge('');
+            setPastureName('');
+            setNotes('');
+            if (formRef.current) {
+                formRef.current.reset();
+            }
+        }
+    }, [classification]);
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit({ breed, age: Number(age), pasture: pastureName, notes });
-
-        // Reset form fields
-        setBreed('');
-        setAge('');
-        setPastureName('');
-        setNotes('');
-
-        // Optionally reset the form using ref
-        if (formRef.current) {
-            formRef.current.reset(); // This will clear all inputs in the form
+        console.log("Form submission started in CowDetails");
+        setIsLoading(true);
+        setErrorMessage(null);
+    
+        if (!breed || age === '' || !pastureName) {
+            setErrorMessage('Breed, age, and pasture are required fields.');
+            setIsLoading(false);
+            return;
+        }
+    
+        const cowData: CowDetailsType = {
+            breed,
+            age: age ? Number(age) : null,
+            pasture: pastureName,
+            notes: notes || null,
+            bcs_score: classification
+        };
+    
+        console.log("Cow data prepared:", cowData);
+    
+        try {
+            console.log("Calling onSubmit with cow data");
+            await onSubmit(cowData);
+            console.log("onSubmit completed successfully");
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            setErrorMessage('Failed to submit cow data');
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4" ref={formRef}>
+            {errorMessage && <div className="text-red-500">{errorMessage}</div>}
+            
             <div>
                 <label className="block text-sm font-medium text-gray-700">Breed</label>
                 <input
@@ -80,9 +125,25 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit }) => {
                 />
             </div>
 
-            <button type="submit"
-                    className="bg-brandGreen text-white px-4 py-2 rounded-lg shadow-md hover:bg-brandBrown transition duration-300">
-                Submit
+            {classification && (
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">BCS Score</label>
+                    <input
+                        type="text"
+                        value={classification}
+                        readOnly
+                        className="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100"
+                    />
+                </div>
+            )}
+
+            <button 
+                type="submit"
+                className="bg-brandGreen text-white px-4 py-2 rounded-lg shadow-md hover:bg-brandBrown transition duration-300"
+                disabled={isLoading || !classification}
+            >
+                {isLoading ? 'Submitting...' : 'Submit'}
+                {(isLoading || !classification) && ' (Disabled)'}
             </button>
         </form>
     );

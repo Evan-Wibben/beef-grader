@@ -1,21 +1,28 @@
 import React from 'react';
-import Link from 'next/link';
+import CardButton from './Button';
 
 interface CardProps {
-    title: string;
-    description: string;
-    link: string;
-    icon: React.ReactNode; // Accepts any React node (like an icon)
+  title: string;
+  description: string;
+  link: string;
+  svg?: React.ReactNode;
 }
 
-const Card: React.FC<CardProps> = ({ title, description, link, icon }) => (
-    <Link href={link} className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
-        <div className="p-6">
-            <div className="text-4xl text-brandGreen mb-4">{icon}</div>
-            <h3 className="text-2xl font-semibold text-brandBrown mb-2">{title}</h3>
-            <p className="text-brandGray">{description}</p>
-        </div>
-    </Link>
+const Card: React.FC<CardProps> = ({ title, description, link, svg }) => (
+  <div className="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-brandBrown">
+    <div className="p-6">
+      <div className="flex items-center mb-4">
+        {svg && <div className="mr-3">{svg}</div>}
+        <h3 className="text-2xl font-bold text-brandBrown">{title}</h3>
+      </div>
+      <p className="text-brandGray leading-relaxed">{description}</p>
+      <div className="mt-4 flex justify-end">
+        <CardButton href={link}>
+          Access
+        </CardButton>
+      </div>
+    </div>
+  </div>
 );
 
 export default Card;

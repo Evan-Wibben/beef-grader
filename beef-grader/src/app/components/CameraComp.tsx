@@ -1,11 +1,14 @@
-'use client'
+'use client';
 
 import React, { useState } from 'react';
 import { Camera, CameraResultType } from '@capacitor/camera';
 
-const CameraComponent: React.FC = () => {
+interface CameraComponentProps {
+    setClassification: (classification: string | null) => void;
+}
+
+const CameraComponent: React.FC<CameraComponentProps> = ({ setClassification }) => {
     const [image, setImage] = useState<string | null>(null);
-    const [classification, setClassification] = useState<string | null>(null);
 
     const takePhoto = async () => {
         try {
@@ -15,10 +18,8 @@ const CameraComponent: React.FC = () => {
                 resultType: CameraResultType.Base64,
             });
 
-            // Set the image base64 to state
             setImage(image.base64String || null);
 
-            // Send the image to the backend
             if (image.base64String) {
                 await sendImageToBackend(image.base64String);
             }
@@ -42,9 +43,10 @@ const CameraComponent: React.FC = () => {
             }
 
             const result = await response.json();
-            setClassification(result.predicted_class);
+            setClassification(result.predicted_class || null);
         } catch (error) {
             console.error('Error sending image to backend:', error);
+            setClassification(null);
         }
     };
 
@@ -60,11 +62,6 @@ const CameraComponent: React.FC = () => {
             {image && (
                 <div className="mt-4">
                     <img src={`data:image/jpeg;base64,${image}`} alt="Captured" className="rounded-lg shadow-lg" />
-                </div>
-            )}
-            {classification && (
-                <div className="mt-4">
-                    <p className="text-lg font-semibold">Classification: {classification}</p>
                 </div>
             )}
         </div>

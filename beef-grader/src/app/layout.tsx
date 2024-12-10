@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <link rel="manifest" href="/manifest.json" />
                 <link rel="preload" href="/_next/static/media/CowsGrazing.53ccf40b.webp" as="image"></link>
                 <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/pwa-elements/dist/index.js"></script>
-                <title>Your App Title</title>
+                <title>BCS Grader</title>
             </head>
             <body>
                 <CowProvider>

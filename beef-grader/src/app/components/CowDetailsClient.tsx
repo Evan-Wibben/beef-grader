@@ -3,12 +3,28 @@
 import React from 'react';
 import CowDetails from './CowDetails';
 
-interface CowDetailsClientProps {
-    onSubmit: (details: { breed: string; age: number; pasture: string; notes: string }) => void;
+interface CowDetailsType {
+    breed: string;
+    age: number | null;
+    pasture: string | null;
+    notes: string | null;
+    bcs_score: string | null;
 }
 
-const CowDetailsClient: React.FC<CowDetailsClientProps> = ({ onSubmit }) => {
-    return <CowDetails onSubmit={onSubmit} />;
+interface CowDetailsClientProps {
+    onSubmit: (details: CowDetailsType) => void;
+    classification: string | null;
+}
+
+const CowDetailsClient: React.FC<CowDetailsClientProps> = ({ onSubmit, classification }) => {
+    const handleSubmit = (details: Omit<CowDetailsType, 'bcs_score'>) => {
+        onSubmit({
+            ...details,
+            bcs_score: classification
+        });
+    };
+
+    return <CowDetails onSubmit={handleSubmit} classification={classification} />;
 };
 
 export default CowDetailsClient;

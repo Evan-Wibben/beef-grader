@@ -27,7 +27,7 @@ const PasturesPage: React.FC = () => {
                     placeholder="Enter new pasture name"
                     className="border p-2 mr-2"
                 />
-                <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+                <button type="submit" className="bg-brandBrown text-white p-2 rounded">
                     Add Pasture
                 </button>
             </form>
@@ -36,7 +36,7 @@ const PasturesPage: React.FC = () => {
                 {pastures.map((pasture) => (
                     <li key={pasture.id} className="bg-white shadow rounded-lg p-4">
                         <Link href={`/pastures/${encodeURIComponent(pasture.name)}`}>
-                            <span className="text-blue-600 hover:underline">{pasture.name}</span>
+                            <span className="bg-brandBrown hover:underline">{pasture.name}</span>
                         </Link>
                     </li>
                 ))}

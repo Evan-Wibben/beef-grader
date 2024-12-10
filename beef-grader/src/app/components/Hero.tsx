@@ -4,7 +4,7 @@ import CowsGrazing from '/public/images/CowsGrazing.webp';
 
 const Hero: React.FC = () => (
     <div className="block-container py-6">
-        <div className="relative h-[10vh] md:h-[20vh] bg-brandGreen text-white overflow-hidden rounded-3xl">
+        <div className="relative h-[10vh] md:h-[20vh] bg-brandGreen text-white overflow-hidden rounded-xl">
             <Image
                 src={CowsGrazing}
                 alt="Cattle grazing in a field"
