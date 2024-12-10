@@ -1,7 +1,8 @@
-'use client';
+'use client'; // Ensure this component is a client component
 
 import React, { useState, useEffect, useRef } from 'react';
 import { usePastureContext } from '../context/PastureContext';
+import Cookies from 'js-cookie'; // Import js-cookie to manage cookies
 
 interface CowDetailsProps {
     onSubmit: (details: CowDetailsType) => void;
@@ -14,6 +15,7 @@ interface CowDetailsType {
     pasture: string | null;
     notes: string | null;
     bcs_score: string | null;
+    userId: string; // Add userId to the cow details type
 }
 
 const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification }) => {
@@ -23,7 +25,7 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification }) => 
     const [pastureName, setPastureName] = useState('');
     const [notes, setNotes] = useState('');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+    
     const formRef = useRef<HTMLFormElement>(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -51,13 +53,17 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification }) => 
             setIsLoading(false);
             return;
         }
-    
+
+        // Retrieve userId from cookies
+        const userId = Cookies.get('userId');
+
         const cowData: CowDetailsType = {
             breed,
             age: age ? Number(age) : null,
             pasture: pastureName,
             notes: notes || null,
-            bcs_score: classification
+            bcs_score: classification,
+            userId: userId || '', // Include userId in the cow data
         };
     
         console.log("Cow data prepared:", cowData);

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import CameraComponent from '../components/CameraComp';
 import CowDetailsClient from './CowDetailsClient';
+import Cookies from 'js-cookie'; // Import js-cookie to manage cookies
 
 interface CowDetailsType {
     breed: string;
@@ -10,16 +11,27 @@ interface CowDetailsType {
     pasture: string | null;
     notes: string | null;
     bcs_score: string | null;
+    userId: string; // Include userId in the type
 }
 
 const CowForm: React.FC = () => {
     const [classification, setClassification] = useState<string | null>(null);
 
-    const handleCowSubmit = async (details: CowDetailsType) => {
+    const handleCowSubmit = async (details: Omit<CowDetailsType, 'userId'>) => {
+        const userId = Cookies.get('userId'); // Retrieve userId from cookies
+        console.log('Retrieved user ID from cookies:', userId); // Debug log for user ID
+
+        if (!userId) {
+            console.error('User ID is not available. Please log in.');
+            return; // Handle case where userId is not available
+        }
+
         const dataToSubmit = {
             ...details,
-            bcs_score: classification
+            bcs_score: classification,
+            userId: userId || '', // Include userId in the submission
         };
+        
         console.log('Cow details to be submitted:', dataToSubmit);
         
         try {
@@ -32,7 +44,8 @@ const CowForm: React.FC = () => {
             });
 
             if (!response.ok) {
-                throw new Error('Failed to submit cow data');
+                const errorDetails = await response.text(); // Log the response text
+                throw new Error(`Failed to submit cow data: ${errorDetails}`);
             }
 
             const result = await response.json();

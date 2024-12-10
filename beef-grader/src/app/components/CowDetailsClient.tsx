@@ -2,6 +2,7 @@
 
 import React from 'react';
 import CowDetails from './CowDetails';
+import Cookies from 'js-cookie'; // Import js-cookie to manage cookies
 
 interface CowDetailsType {
     breed: string;
@@ -9,6 +10,7 @@ interface CowDetailsType {
     pasture: string | null;
     notes: string | null;
     bcs_score: string | null;
+    userId: string; // Include userId in the type
 }
 
 interface CowDetailsClientProps {
@@ -17,10 +19,13 @@ interface CowDetailsClientProps {
 }
 
 const CowDetailsClient: React.FC<CowDetailsClientProps> = ({ onSubmit, classification }) => {
-    const handleSubmit = (details: Omit<CowDetailsType, 'bcs_score'>) => {
+    const handleSubmit = (details: Omit<CowDetailsType, 'bcs_score' | 'userId'>) => {
+        const userId = Cookies.get('userId'); // Retrieve userId from cookies
+
         onSubmit({
             ...details,
-            bcs_score: classification
+            bcs_score: classification,
+            userId: userId || '', // Include userId in the submission
         });
     };
 
