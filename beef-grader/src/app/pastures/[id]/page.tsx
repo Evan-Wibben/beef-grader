@@ -46,13 +46,41 @@ const PasturePage: React.FC = () => {
         }
     }, [id]);
 
+    const handleDeleteCow = async (cowId: number) => {
+        if (confirm('Are you sure you want to remove this cow from the pasture?')) {
+            try {
+                const response = await fetch(`/api/pastures/${id}?cowId=${cowId}`, {
+                    method: 'DELETE',
+                });
+    
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('Delete Error:', errorData); // Log delete error details
+                    throw new Error(errorData.error || 'Failed to remove cow');
+                }
+    
+                // Refresh pasture data after removal
+                setPastureData((prev) => ({
+                    ...prev!,
+                    cows: prev!.cows.filter(cow => cow.id !== cowId),
+                }));
+            } catch (err) {
+                console.error(err);
+                alert('Error removing cow record');
+            }
+        }
+    };
+
     if (error) return <p className="text-red-500">{error}</p>;
     if (!pastureData) return <p>Loading...</p>;
 
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-6">{pastureData.name}</h1>
-            <CowsForPasture cows={pastureData.cows} />
+            <CowsForPasture 
+                cows={pastureData.cows} 
+                onDeleteCow={handleDeleteCow} // Pass the delete handler to the component
+            />
         </div>
     );
 };

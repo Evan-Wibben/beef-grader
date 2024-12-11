@@ -12,6 +12,7 @@ interface PastureContextType {
     pastures: Pasture[];
     addPasture: (pasture: Omit<Pasture, 'id'>) => Promise<void>;
     fetchPastures: () => Promise<void>;
+    deletePasture: (id: number) => Promise<void>;
 }
 
 const PastureContext = createContext<PastureContextType | undefined>(undefined);
@@ -49,7 +50,6 @@ export const PastureProvider: React.FC<{ children: ReactNode }> = ({ children })
             return;
         }
     
-        // Change endpoint to match the GET request for pastures
         const response = await fetch(`/api/pastures?userId=${userId}`);
         if (response.ok) {
             const data = await response.json();
@@ -58,10 +58,27 @@ export const PastureProvider: React.FC<{ children: ReactNode }> = ({ children })
             console.error('Failed to fetch pastures:', await response.text());
         }
     };
-    
+
+    const deletePasture = async (id: number) => {
+        const userId = Cookies.get('userId');
+        if (!userId) {
+            console.error('User ID is not available. Cannot delete pasture.');
+            return;
+        }
+
+        const response = await fetch(`/api/pastures?id=${id}&userId=${userId}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            setPastures((prevPastures) => prevPastures.filter(pasture => pasture.id !== id));
+        } else {
+            console.error('Failed to delete pasture:', await response.text());
+        }
+    };
 
     return (
-        <PastureContext.Provider value={{ pastures, addPasture, fetchPastures }}>
+        <PastureContext.Provider value={{ pastures, addPasture, fetchPastures, deletePasture }}>
             {children}
         </PastureContext.Provider>
     );

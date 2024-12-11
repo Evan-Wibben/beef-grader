@@ -46,3 +46,27 @@ export async function POST(request: Request) {
         return new Response(JSON.stringify({ error: 'Failed to add pasture.' }), { status: 500 });
     }
 }
+
+// Handle DELETE requests
+export async function DELETE(request: Request) {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    const userId = searchParams.get('userId');
+
+    if (!id || !userId) {
+        return new Response(JSON.stringify({ error: 'Pasture ID and User ID are required.' }), { status: 400 });
+    }
+
+    try {
+        const result = await pool.query('DELETE FROM pastures WHERE id = $1 AND user_id = $2 RETURNING *', [id, userId]);
+        
+        if (result.rowCount === 0) {
+            return new Response(JSON.stringify({ error: 'Pasture not found or user not authorized.' }), { status: 404 });
+        }
+
+        return NextResponse.json({ message: 'Pasture deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting pasture:', error);
+        return new Response(JSON.stringify({ error: 'Failed to delete pasture.' }), { status: 500 });
+    }
+}

@@ -4,7 +4,7 @@ import pool from '../../../../lib/db'; // Adjust the path as needed
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params; // Await the params object
+    const { id } = await params;
 
     try {
         // Fetch pasture details
@@ -29,5 +29,25 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     } catch (error) {
         console.error('Error fetching pasture details:', error);
         return new Response(JSON.stringify({ error: 'Failed to fetch pasture details.' }), { status: 500 });
+    }
+}
+
+// Updated DELETE method to remove a cow from a pasture
+export async function DELETE(request: Request) {
+    const { searchParams } = new URL(request.url);
+    const cowId = searchParams.get('cowId');
+
+    if (!cowId) {
+        return new Response(JSON.stringify({ error: 'Cow ID is required.' }), { status: 400 });
+    }
+
+    try {
+        // Update the cow's pasture_id to NULL (or another pasture ID if needed)
+        await pool.query('UPDATE cows SET pasture_id = NULL WHERE id = $1', [cowId]);
+
+        return NextResponse.json({ message: 'Cow removed from pasture successfully' });
+    } catch (error) {
+        console.error('Error removing cow from pasture:', error);
+        return new Response(JSON.stringify({ error: 'Failed to remove cow from pasture.' }), { status: 500 });
     }
 }
