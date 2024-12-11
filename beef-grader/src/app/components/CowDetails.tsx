@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { usePastureContext } from '../context/PastureContext';
-import Cookies from 'js-cookie'; // Import js-cookie to manage cookies
 
 interface CowDetailsProps {
     onSubmit: (details: CowDetailsType) => void;
@@ -15,7 +14,8 @@ interface CowDetailsType {
     pasture: string | null;
     notes: string | null;
     bcs_score: string | null;
-    userId: string; // Add userId to the cow details type
+    userId: string;
+    pastureId: number;
 }
 
 const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification }) => {
@@ -54,8 +54,12 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification }) => 
             return;
         }
 
-        // Retrieve userId from cookies
-        const userId = Cookies.get('userId');
+        const selectedPasture = pastures.find(p => p.name === pastureName);
+        if (!selectedPasture) {
+            setErrorMessage('Selected pasture not found.');
+            setIsLoading(false);
+            return;
+        }
 
         const cowData: CowDetailsType = {
             breed,
@@ -63,7 +67,8 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification }) => 
             pasture: pastureName,
             notes: notes || null,
             bcs_score: classification,
-            userId: userId || '', // Include userId in the cow data
+            userId: '', // This will be set in the parent component
+            pastureId: selectedPasture.id
         };
     
         console.log("Cow data prepared:", cowData);

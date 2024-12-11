@@ -71,9 +71,9 @@ const Login: React.FC = () => {
             </form>
             {errorMessage && <p className="mt-4 text-red-500">{errorMessage}</p>} {/* Display error message */}
             <p className="mt-4">
-                Don't have an account?{' '}
-                <a href="/register" className="text-blue-500 hover:underline">
-                    Create one here
+                     {`Don't have an account? `}
+                 <a href="/register" className="text-blue-500 hover:underline">
+                      Create one here
                 </a>
             </p>
         </div>

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import CameraComponent from '../components/CameraComp';
 import CowDetailsClient from './CowDetailsClient';
-import Cookies from 'js-cookie'; // Import js-cookie to manage cookies
+import Cookies from 'js-cookie';
 
 interface CowDetailsType {
     breed: string;
@@ -11,25 +11,26 @@ interface CowDetailsType {
     pasture: string | null;
     notes: string | null;
     bcs_score: string | null;
-    userId: string; // Include userId in the type
+    userId: string;
+    pastureId: number;
 }
 
 const CowForm: React.FC = () => {
     const [classification, setClassification] = useState<string | null>(null);
 
-    const handleCowSubmit = async (details: Omit<CowDetailsType, 'userId'>) => {
-        const userId = Cookies.get('userId'); // Retrieve userId from cookies
-        console.log('Retrieved user ID from cookies:', userId); // Debug log for user ID
+    const handleCowSubmit = async (details: Omit<CowDetailsType, 'userId' | 'bcs_score'>) => {
+        const userId = Cookies.get('userId');
+        console.log('Retrieved user ID from cookies:', userId);
 
         if (!userId) {
             console.error('User ID is not available. Please log in.');
-            return; // Handle case where userId is not available
+            return;
         }
 
         const dataToSubmit = {
             ...details,
             bcs_score: classification,
-            userId: userId || '', // Include userId in the submission
+            userId: userId,
         };
         
         console.log('Cow details to be submitted:', dataToSubmit);
@@ -44,14 +45,13 @@ const CowForm: React.FC = () => {
             });
 
             if (!response.ok) {
-                const errorDetails = await response.text(); // Log the response text
+                const errorDetails = await response.text();
                 throw new Error(`Failed to submit cow data: ${errorDetails}`);
             }
 
             const result = await response.json();
             console.log('Submission successful:', result);
             
-            // Clear classification after successful submission
             setClassification(null);
         } catch (error) {
             console.error('Error submitting cow data:', error);
