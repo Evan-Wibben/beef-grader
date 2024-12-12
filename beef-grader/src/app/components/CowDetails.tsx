@@ -6,6 +6,7 @@ import { usePastureContext } from '../context/PastureContext';
 interface CowDetailsProps {
     onSubmit: (details: CowDetailsType) => void;
     classification: string | null;
+    imagePath: string | null; // Add this line
 }
 
 interface CowDetailsType {
@@ -16,9 +17,10 @@ interface CowDetailsType {
     bcs_score: string | null;
     userId: string;
     pastureId: number;
+    imagePath: string | null;
 }
 
-const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification }) => {
+const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, imagePath }) => {
     const { pastures } = usePastureContext();
     const [breed, setBreed] = useState('');
     const [age, setAge] = useState<number | ''>('');
@@ -68,7 +70,8 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification }) => 
             notes: notes || null,
             bcs_score: classification,
             userId: '', // This will be set in the parent component
-            pastureId: selectedPasture.id
+            pastureId: selectedPasture.id,
+            imagePath: imagePath // Now this is defined
         };
     
         console.log("Cow data prepared:", cowData);
@@ -147,6 +150,7 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification }) => 
                     />
                 </div>
             )}
+
 
             <button 
                 type="submit"

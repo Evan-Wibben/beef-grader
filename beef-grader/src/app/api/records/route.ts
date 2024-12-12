@@ -13,18 +13,16 @@ export async function GET(request: Request) {
 
     try {
         const result = await pool.query(`
-            SELECT c.id, c.breed, c.age, p.name as pasture, c.notes, c.bcs_score
+            SELECT c.id, c.breed, c.age, p.name as pasture, c.notes, c.bcs_score, c.image_url
             FROM cows c
             LEFT JOIN pastures p ON c.pasture_id = p.id
             WHERE p.user_id = $1 OR c.pasture_id IS NULL
         `, [userId]);
 
-        // Log the result for debugging
-        console.log('Cows fetched:', result.rows);
-
         return NextResponse.json(result.rows);
     } catch (error) {
         console.error('Error fetching cow records:', error);
+        return NextResponse.json({ error: 'Failed to fetch cow records' }, { status: 500 });
     }
 }
 

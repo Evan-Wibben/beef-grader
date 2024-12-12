@@ -2,14 +2,16 @@
 
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
+import Image from 'next/image';
 
 interface Cow {
     id: number;
     breed: string;
     age: number;
-    pasture: string | null; // Allow pasture to be null
+    pasture: string | null;
     notes: string;
     bcs_score: string;
+    image_url: string | null;
 }
 
 const RecordsPage: React.FC = () => {
@@ -28,14 +30,12 @@ const RecordsPage: React.FC = () => {
         try {
             const response = await fetch(`/api/records?userId=${userId}`);
             if (!response.ok) {
-                const errorData = await response.json();
-                console.error('Server Error:', errorData); // Log server error details
-                throw new Error(errorData.error || 'Failed to fetch cows');
+                throw new Error('Failed to fetch cows');
             }
             const data = await response.json();
             setCows(data);
-        } catch (err) {
-            console.error('Detailed error:', err);
+        } catch {
+            setError('An error occurred while fetching cow records.');
         } finally {
             setIsLoading(false);
         }
@@ -57,15 +57,12 @@ const RecordsPage: React.FC = () => {
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                console.error('Delete Error:', errorData); // Log delete error details
-                throw new Error(errorData.error || 'Failed to delete cow');
+                throw new Error('Failed to delete cow');
             }
 
-            // Refresh the cow list
             await fetchCows();
-        } catch (err) {
-            console.error('Detailed delete error:', err);
+        } catch {
+            setError('An error occurred while deleting the cow record.');
         }
     };
 
@@ -75,39 +72,42 @@ const RecordsPage: React.FC = () => {
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-6">Cow Records</h1>
-            <table className="min-w-full bg-white">
-                <thead>
-                    <tr>
-                        <th className="px-4 py-2">Breed</th>
-                        <th className="px-4 py-2">Age</th>
-                        <th className="px-4 py-2">Pasture</th>
-                        <th className="px-4 py-2">BCS Score</th>
-                        <th className="px-4 py-2">Notes</th>
-                        <th className="px-4 py-2">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {cows.map((cow) => (
-                        <tr key={cow.id}>
-                            <td className="border px-4 py-2">{cow.breed}</td>
-                            <td className="border px-4 py-2">{cow.age}</td>
-                            <td className="border px-4 py-2">{cow.pasture || 'No Pasture'}</td> {/* Display placeholder text */}
-                            <td className="border px-4 py-2">{cow.bcs_score}</td>
-                            <td className="border px-4 py-2">{cow.notes}</td>
-                            <td className="border px-4 py-2">
-                                <button 
-                                    onClick={() => handleDelete(cow.id)}
-                                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-                                >
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {cows.map((cow) => (
+                    <div key={cow.id} className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col">
+                        {cow.image_url && (
+                            <div className="w-full h-48 relative">
+                                <Image
+                                    src={cow.image_url}
+                                    alt={`${cow.breed} cow`}
+                                    layout="fill"
+                                    objectFit="cover"
+                                />
+                            </div>
+                        )}
+                        <div className="px-4 py-5 sm:p-6 flex-grow">
+                            <h3 className="text-lg leading-6 font-medium text-gray-900">{cow.breed}</h3>
+                            <div className="mt-2 max-w-xl text-sm text-gray-500">
+                                <p>Age: {cow.age}</p>
+                                <p>Pasture: {cow.pasture || 'No Pasture'}</p>
+                                <p>BCS Score: {cow.bcs_score}</p>
+                                <p>Notes: {cow.notes}</p>
+                            </div>
+                        </div>
+                        <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                            <button 
+                                onClick={() => handleDelete(cow.id)}
+                                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
-    );    
+    );
+    
 };
 
 export default RecordsPage;

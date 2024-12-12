@@ -5,9 +5,10 @@ import { Camera, CameraResultType } from '@capacitor/camera';
 
 interface CameraComponentProps {
     setClassification: (classification: string | null) => void;
+    setImagePath: (path: string | null) => void;
 }
 
-const CameraComponent: React.FC<CameraComponentProps> = ({ setClassification }) => {
+const CameraComponent: React.FC<CameraComponentProps> = ({ setClassification, setImagePath }) => {
     const [image, setImage] = useState<string | null>(null);
 
     const takePhoto = async () => {
@@ -30,23 +31,37 @@ const CameraComponent: React.FC<CameraComponentProps> = ({ setClassification }) 
 
     const sendImageToBackend = async (imageBase64: string) => {
         try {
-            const response = await fetch('http://localhost:8080/api/predict', {
+            // First, upload the image
+            const uploadResponse = await fetch('/api/upload-image', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ image: imageBase64 }),
             });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            if (!uploadResponse.ok) {
+                throw new Error('Failed to upload image');
             }
 
-            const result = await response.json();
-            setClassification(result.predicted_class || null);
+            const uploadResult = await uploadResponse.json();
+            setImagePath(uploadResult.imagePath);
+
+            // Then, send for classification
+            const classificationResponse = await fetch('http://localhost:8080/api/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: imageBase64 }),
+            });
+
+            if (!classificationResponse.ok) {
+                throw new Error('Failed to classify image');
+            }
+
+            const classificationResult = await classificationResponse.json();
+            setClassification(classificationResult.predicted_class || null);
         } catch (error) {
-            console.error('Error sending image to backend:', error);
+            console.error('Error processing image:', error);
             setClassification(null);
+            setImagePath(null);
         }
     };
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 interface Cow {
     id: number;
@@ -6,41 +7,50 @@ interface Cow {
     age: number;
     notes: string;
     bcs_score: string;
+    image_url: string | null;
 }
 
 interface CowsForPastureProps {
     cows: Cow[];
-    onDeleteCow: (cowId: number) => void; // Add this prop type
+    onDeleteCow: (cowId: number) => void;
 }
 
 const CowsForPasture: React.FC<CowsForPastureProps> = ({ cows, onDeleteCow }) => {
-    if (cows.length === 0) {
-        return <p>No cows in this pasture.</p>;
-    }
-
     return (
-        <div>
-            <h2 className="text-xl font-bold mb-4">Cows in this Pasture</h2>
-            <ul className="space-y-2">
-                {cows.map(cow => (
-                    <li key={cow.id} className="bg-white shadow rounded-lg p-4 flex justify-between items-center">
-                        <div>
-                            <h3 className="font-semibold">{cow.breed}</h3>
-                            <p>Age: {cow.age}</p>
-                            <p>Notes: {cow.notes}</p>
-                            <p>BCS Score: {cow.bcs_score}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {cows.map((cow) => (
+                <div key={cow.id} className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col">
+                    {cow.image_url && (
+                        <div className="w-full h-48 relative">
+                            <Image
+                                src={cow.image_url}
+                                alt={`${cow.breed} cow`}
+                                layout="fill"
+                                objectFit="cover"
+                            />
                         </div>
+                    )}
+                    <div className="px-4 py-5 sm:p-6 flex-grow">
+                        <h3 className="text-lg leading-6 font-medium text-gray-900">{cow.breed}</h3>
+                        <div className="mt-2 max-w-xl text-sm text-gray-500">
+                            <p>Age: {cow.age}</p>
+                            <p>BCS Score: {cow.bcs_score}</p>
+                            <p>Notes: {cow.notes}</p>
+                        </div>
+                    </div>
+                    <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                         <button 
-                            onClick={() => onDeleteCow(cow.id)} 
-                            className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                            onClick={() => onDeleteCow(cow.id)}
+                            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                         >
-                            Delete
+                            Remove from Pasture
                         </button>
-                    </li>
-                ))}
-            </ul>
+                    </div>
+                </div>
+            ))}
         </div>
     );
 };
 
 export default CowsForPasture;
+

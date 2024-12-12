@@ -16,8 +16,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
         const pasture = pastureResult.rows[0];
 
-        // Fetch cows associated with this pasture
-        const cowsResult = await pool.query('SELECT * FROM cows WHERE pasture_id = $1', [id]);
+        // Fetch cows associated with this pasture, including image_url
+        const cowsResult = await pool.query('SELECT id, breed, age, notes, bcs_score, image_url FROM cows WHERE pasture_id = $1', [id]);
 
         // Combine pasture details and cows
         const response = {

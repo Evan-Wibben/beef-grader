@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import CameraComponent from '../components/CameraComp';
+import CameraComponent from './CameraComp';
 import CowDetailsClient from './CowDetailsClient';
 import Cookies from 'js-cookie';
 
@@ -13,15 +13,15 @@ interface CowDetailsType {
     bcs_score: string | null;
     userId: string;
     pastureId: number;
+    imagePath: string | null;
 }
 
 const CowForm: React.FC = () => {
     const [classification, setClassification] = useState<string | null>(null);
+    const [imagePath, setImagePath] = useState<string | null>(null);
 
-    const handleCowSubmit = async (details: Omit<CowDetailsType, 'userId' | 'bcs_score'>) => {
+    const handleCowSubmit = async (details: Omit<CowDetailsType, 'userId' | 'bcs_score' | 'imagePath'>) => {
         const userId = Cookies.get('userId');
-        console.log('Retrieved user ID from cookies:', userId);
-
         if (!userId) {
             console.error('User ID is not available. Please log in.');
             return;
@@ -31,9 +31,8 @@ const CowForm: React.FC = () => {
             ...details,
             bcs_score: classification,
             userId: userId,
+            imagePath: imagePath
         };
-        
-        console.log('Cow details to be submitted:', dataToSubmit);
         
         try {
             const response = await fetch('/api/submit-cow', {
@@ -53,6 +52,7 @@ const CowForm: React.FC = () => {
             console.log('Submission successful:', result);
             
             setClassification(null);
+            setImagePath(null);
         } catch (error) {
             console.error('Error submitting cow data:', error);
         }
@@ -62,11 +62,13 @@ const CowForm: React.FC = () => {
         <div className="p-6">
             <h1 className="text-2xl font-bold mb-4">Add Cow Details</h1>
             <CameraComponent 
-                setClassification={setClassification} 
+                setClassification={setClassification}
+                setImagePath={setImagePath}
             />
             <CowDetailsClient 
                 onSubmit={handleCowSubmit} 
-                classification={classification} 
+                classification={classification}
+                imagePath={imagePath}
             />
         </div>
     );
