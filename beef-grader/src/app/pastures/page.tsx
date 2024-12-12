@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePastureContext } from '../context/PastureContext';
+import withAuth from '../components/withAuth'
 
 const PasturesPage: React.FC = () => {
     const { pastures, addPasture, fetchPastures, deletePasture } = usePastureContext();
@@ -64,4 +65,4 @@ const PasturesPage: React.FC = () => {
     );
 };
 
-export default PasturesPage;
+export default withAuth(PasturesPage);

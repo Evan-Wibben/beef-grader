@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import Image from 'next/image';
+import withAuth from '../components/withAuth'
 
 interface Cow {
     id: number;
@@ -81,7 +82,7 @@ const RecordsPage: React.FC = () => {
                                     src={cow.image_url}
                                     alt={`${cow.breed} cow`}
                                     layout="fill"
-                                    objectFit="cover"
+                                    style={{ objectFit: 'cover' }}
                                 />
                             </div>
                         )}
@@ -110,4 +111,4 @@ const RecordsPage: React.FC = () => {
     
 };
 
-export default RecordsPage;
+export default withAuth(RecordsPage);

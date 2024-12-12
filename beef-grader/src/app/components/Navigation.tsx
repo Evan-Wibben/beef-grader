@@ -6,6 +6,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Squash as Hamburger } from 'hamburger-react';
 import Cookies from 'js-cookie'; // Import js-cookie for cookie management
 import { useRouter } from 'next/navigation'; // Import useRouter for redirection
+import BeefLogo from '/public/images/BeefLogo.png';
+import Image from 'next/image'
+
 
 const Navigation: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -50,7 +53,14 @@ const Navigation: React.FC = () => {
             <div className="block-container py-4">
                 <div className="flex justify-between items-center">
                     <Link href="/" className="flex items-center space-x-3">
-                        <span className="text-2xl font-extrabold tracking-tight">Beef Grader</span>
+                        <span className="text-2xl font-extrabold tracking-tight">
+                            <Image
+                                alt='Logo for Beef Grader'
+                                src={BeefLogo}
+                                className="h-16 w-auto"
+                                priority
+                            />
+                        </span>
                     </Link>
                     <ul className="hidden md:flex space-x-6">
                         {navItems.map((item) => (
@@ -82,20 +92,20 @@ const Navigation: React.FC = () => {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div initial="closed" animate="open" exit="closed" variants={menuVariants}
-                                className="md:hidden overflow-hidden">
+                                className="md:hidden overflow-hidden block-container py-2">
                         <motion.ul className="flex flex-col">
                             {navItems.map((item) => (
-                                <motion.li key={item} variants={itemVariants} className="border-t border-white/20">
+                                <motion.li key={item} variants={itemVariants} className="border-t border-brandLightGreen/50">
                                     <Link href={`/${item.toLowerCase().replace(' ', '-')}`}
-                                          className="block py=03 px=04 text-lg hover:bg-white/10 transition"
+                                          className="block text-xl hover:bg-white/10 transition py-1 text-center"
                                           onClick={() => setIsOpen(false)}>
                                         {item}
                                     </Link>
                                 </motion.li>
                             ))}
                             {/* Mobile Sign Out Option */}
-                            <motion.li variants={itemVariants} className="border-t border-white/20">
-                                <button onClick={handleSignOut} className="block py=03 px=04 text-lg hover:bg-white/10 transition">
+                            <motion.li variants={itemVariants} className="border-t border-brandLightGreen/50 py-4">
+                                <button onClick={handleSignOut} className="w-full bg-brandLightGreen text-black px-4 py-2 rounded-md border-2 border-brandLightGreen hover:bg-brandGreen hover:border-2 hover:border-brandLightGreen hover:text-white transition duration-300 ease-in-out font-bold">
                                     Sign Out
                                 </button>
                             </motion.li>

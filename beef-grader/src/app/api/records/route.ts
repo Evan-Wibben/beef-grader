@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import pool from '../../../lib/db'; // Adjust the path as needed
+import pool from '../../../lib/db';
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +36,6 @@ export async function DELETE(request: Request) {
     }
 
     try {
-        // Check if the cow belongs to the user
         const checkResult = await pool.query(`
             SELECT c.id
             FROM cows c
@@ -48,7 +47,6 @@ export async function DELETE(request: Request) {
             return NextResponse.json({ error: 'Cow not found or not owned by user.' }, { status: 404 });
         }
 
-        // If the check passes, delete the cow from the database
         await pool.query('DELETE FROM cows WHERE id = $1', [cowId]);
 
         return NextResponse.json({ message: 'Cow record deleted successfully' });

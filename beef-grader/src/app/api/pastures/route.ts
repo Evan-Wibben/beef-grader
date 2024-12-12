@@ -1,6 +1,6 @@
 // File: app/api/pastures/route.ts
 import { NextResponse } from 'next/server';
-import pool from '../../../lib/db'; // Adjust path based on your structure
+import pool from '../../../lib/db';
 
 export const dynamic = "force-dynamic";
 
@@ -28,19 +28,17 @@ export async function POST(request: Request) {
         const data = await request.json(); // Parse the JSON body of the request
         const { name, userId } = data; // Destructure the necessary fields
 
-        // Validate input
         if (!name || !userId) {
             return new Response(JSON.stringify({ error: 'Name and user ID are required.' }), { status: 400 });
         }
 
-        // Insert the new pasture into the database
         const result = await pool.query(
             'INSERT INTO pastures (name, user_id) VALUES ($1, $2) RETURNING *',
             [name, userId]
         );
 
         console.log('Pasture added successfully:', result.rows[0]);
-        return NextResponse.json(result.rows[0], { status: 201 }); // Return the newly created pasture
+        return NextResponse.json(result.rows[0], { status: 201 });
     } catch (error) {
         console.error('Error adding pasture:', error);
         return new Response(JSON.stringify({ error: 'Failed to add pasture.' }), { status: 500 });

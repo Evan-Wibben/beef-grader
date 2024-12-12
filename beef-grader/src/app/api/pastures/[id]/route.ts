@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import pool from '../../../../lib/db'; // Adjust the path as needed
+import pool from '../../../../lib/db';
 
 export const dynamic = "force-dynamic";
 
@@ -16,10 +16,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
         const pasture = pastureResult.rows[0];
 
-        // Fetch cows associated with this pasture, including image_url
         const cowsResult = await pool.query('SELECT id, breed, age, notes, bcs_score, image_url FROM cows WHERE pasture_id = $1', [id]);
 
-        // Combine pasture details and cows
         const response = {
             ...pasture,
             cows: cowsResult.rows,
@@ -42,7 +40,6 @@ export async function DELETE(request: Request) {
     }
 
     try {
-        // Update the cow's pasture_id to NULL (or another pasture ID if needed)
         await pool.query('UPDATE cows SET pasture_id = NULL WHERE id = $1', [cowId]);
 
         return NextResponse.json({ message: 'Cow removed from pasture successfully' });

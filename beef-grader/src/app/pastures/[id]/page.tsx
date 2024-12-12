@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import CowsForPasture from '../../components/CowsForPasture';
+import withAuth from '../../components/withAuth'
 
 // Define the Cow interface
 interface Cow {
@@ -11,6 +12,7 @@ interface Cow {
     age: number;
     notes: string;
     bcs_score: string;
+    image_url: string | null;
 }
 
 // Define the PastureData interface using the Cow interface
@@ -85,4 +87,4 @@ const PasturePage: React.FC = () => {
     );
 };
 
-export default PasturePage;
+export default withAuth(PasturePage);

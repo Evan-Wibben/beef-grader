@@ -1,8 +1,9 @@
-// app/page.tsx
+'use client'
 
 import React from 'react';
 import Hero from './components/Hero';
 import Card from './components/Card';
+import withAuth from './components/withAuth'
 
 
 const Home: React.FC = () => {
@@ -34,4 +35,4 @@ const Home: React.FC = () => {
     );
 };
 
-export default Home;
+export default withAuth(Home);

@@ -31,7 +31,6 @@ const CameraComponent: React.FC<CameraComponentProps> = ({ setClassification, se
 
     const sendImageToBackend = async (imageBase64: string) => {
         try {
-            // First, upload the image
             const uploadResponse = await fetch('/api/upload-image', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -45,7 +44,6 @@ const CameraComponent: React.FC<CameraComponentProps> = ({ setClassification, se
             const uploadResult = await uploadResponse.json();
             setImagePath(uploadResult.imagePath);
 
-            // Then, send for classification
             const classificationResponse = await fetch('http://localhost:8080/api/predict', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
