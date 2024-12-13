@@ -10,8 +10,8 @@ interface CowDetailsType {
     notes: string | null;
     bcs_score: string | null;
     userId: string;
-    pastureId: number;
-    imagePath: string | null; // Add this line if not already present
+    pastureId?: number; // Make pastureId optional
+    imagePath: string | null;
 }
 
 interface CowDetailsClientProps {
@@ -24,7 +24,7 @@ const CowDetailsClient: React.FC<CowDetailsClientProps> = ({ onSubmit, classific
     const handleSubmit = (details: Omit<CowDetailsType, 'userId' | 'bcs_score' | 'imagePath'>) => {
         onSubmit({
             ...details,
-            pastureId: Number(details.pastureId)
+            pastureId: details.pastureId ? Number(details.pastureId) : undefined
         });
     };
 

@@ -1,4 +1,4 @@
-'use client'; // Ensure this component is a client component
+'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { usePastureContext } from '../context/PastureContext';
@@ -6,7 +6,7 @@ import { usePastureContext } from '../context/PastureContext';
 interface CowDetailsProps {
     onSubmit: (details: CowDetailsType) => void;
     classification: string | null;
-    imagePath: string | null; // Add this line
+    imagePath: string | null;
 }
 
 interface CowDetailsType {
@@ -16,7 +16,7 @@ interface CowDetailsType {
     notes: string | null;
     bcs_score: string | null;
     userId: string;
-    pastureId: number;
+    pastureId?: number; // Made optional
     imagePath: string | null;
 }
 
@@ -31,7 +31,6 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
     const formRef = useRef<HTMLFormElement>(null);
     const [isLoading, setIsLoading] = useState(false);
 
-    // Reset form when classification changes
     useEffect(() => {
         if (!classification) {
             setBreed('');
@@ -50,28 +49,23 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
         setIsLoading(true);
         setErrorMessage(null);
     
-        if (!breed || age === '' || !pastureName) {
-            setErrorMessage('Breed, age, and pasture are required fields.');
+        if (!breed) {
+            setErrorMessage('Breed is a required field.');
             setIsLoading(false);
             return;
         }
 
         const selectedPasture = pastures.find(p => p.name === pastureName);
-        if (!selectedPasture) {
-            setErrorMessage('Selected pasture not found.');
-            setIsLoading(false);
-            return;
-        }
 
         const cowData: CowDetailsType = {
             breed,
             age: age ? Number(age) : null,
-            pasture: pastureName,
+            pasture: pastureName || null,
             notes: notes || null,
             bcs_score: classification,
-            userId: '', // This will be set in the parent component
-            pastureId: selectedPasture.id,
-            imagePath: imagePath // Now this is defined
+            userId: '', 
+            pastureId: selectedPasture?.id, // Use optional chaining
+            imagePath: imagePath
         };
     
         console.log("Cow data prepared:", cowData);
@@ -93,7 +87,7 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
             {errorMessage && <div className="text-red-500">{errorMessage}</div>}
             
             <div>
-                <label className="block text-sm font-medium text-gray-700">Breed</label>
+                <label className="block text-sm font-medium text-gray-700">Tag Number</label>
                 <input
                     type="text"
                     value={breed}
@@ -110,17 +104,15 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
                     value={age}
                     onChange={(e) => setAge(e.target.value === '' ? '' : Number(e.target.value))}
                     className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-                    required
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Pasture</label>
+                <label className="block text-sm font-medium text-gray-700">Pasture (Optional)</label>
                 <select
                     value={pastureName}
                     onChange={(e) => setPastureName(e.target.value)}
                     className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-                    required
                 >
                     <option value="">Select a pasture</option>
                     {pastures.map((pasture) => (
@@ -151,14 +143,17 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
                 </div>
             )}
 
-
             <button 
                 type="submit"
-                className="bg-brandGreen text-white px-4 py-2 rounded-lg shadow-md hover:bg-brandBrown transition duration-300"
-                disabled={isLoading || !classification}
+                className={`px-4 py-2 rounded-lg shadow-md transition duration-300 ${
+                    isLoading || !classification || !breed
+                        ? 'bg-brandGray text-white'
+                        : 'bg-brandGreen text-white hover:bg-brandBrown'
+                }`}
+                disabled={isLoading || !classification || !breed}
             >
                 {isLoading ? 'Submitting...' : 'Submit'}
-                {(isLoading || !classification) && ' (Disabled)'}
+                {(isLoading || !classification || !breed) && ''}
             </button>
         </form>
     );

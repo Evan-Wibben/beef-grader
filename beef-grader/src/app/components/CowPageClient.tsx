@@ -12,7 +12,7 @@ interface CowDetailsType {
     notes: string | null;
     bcs_score: string | null;
     userId: string;
-    pastureId: number;
+    pastureId?: number;
     imagePath: string | null;
 }
 
@@ -59,7 +59,8 @@ const CowForm: React.FC = () => {
     };
 
     return (
-        <div className="p-6">
+        <div className='bg-brandLightGreen'>
+            <div className="p-6">
             <h1 className="text-2xl font-bold mb-4">Add Cow Details</h1>
             <CameraComponent 
                 setClassification={setClassification}
@@ -71,6 +72,8 @@ const CowForm: React.FC = () => {
                 imagePath={imagePath}
             />
         </div>
+        </div>
+        
     );
 };
 

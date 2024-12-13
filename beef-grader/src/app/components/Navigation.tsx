@@ -7,8 +7,10 @@ import { Squash as Hamburger } from 'hamburger-react';
 import Cookies from 'js-cookie'; // Import js-cookie for cookie management
 import { useRouter } from 'next/navigation'; // Import useRouter for redirection
 import BeefLogo from '/public/images/BeefLogo.png';
-import Image from 'next/image'
+import Image from 'next/image';
+import Buttons  from './Button';
 
+const { SignOutButton } = Buttons;
 
 const Navigation: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -103,11 +105,11 @@ const Navigation: React.FC = () => {
                                     </Link>
                                 </motion.li>
                             ))}
-                            {/* Mobile Sign Out Option */}
-                            <motion.li variants={itemVariants} className="border-t border-brandLightGreen/50 py-4">
-                                <button onClick={handleSignOut} className="w-full bg-brandLightGreen text-black px-4 py-2 rounded-md border-2 border-brandLightGreen hover:bg-brandGreen hover:border-2 hover:border-brandLightGreen hover:text-white transition duration-300 ease-in-out font-bold">
+                            {/* Mobile Sign Out */}
+                            <motion.li variants={itemVariants} className="border-t border-brandLightGreen/50 py-4 flex">
+                                <SignOutButton href="/login" onClick={handleSignOut}>
                                     Sign Out
-                                </button>
+                                </SignOutButton>
                             </motion.li>
                         </motion.ul>
                     </motion.div>

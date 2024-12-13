@@ -2,10 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import CowsForPasture from '../../components/CowsForPasture';
+import Image from 'next/image';
 import withAuth from '../../components/withAuth'
 
-// Define the Cow interface
 interface Cow {
     id: number;
     breed: string;
@@ -15,12 +14,58 @@ interface Cow {
     image_url: string | null;
 }
 
-// Define the PastureData interface using the Cow interface
 interface PastureData {
     id: string;
     name: string;
     cows: Cow[];
 }
+
+const CowCard: React.FC<{ cow: Cow; onDeleteCow: (id: number) => void }> = ({ cow, onDeleteCow }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    return (
+        <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div className="p-4">
+                <div className="flex justify-between items-center">
+                    <h3 className="text-lg font-medium text-gray-900">Tag #: {cow.breed}</h3>
+                    <p className="text-sm text-gray-600">BCS Score: {cow.bcs_score}</p>
+                </div>
+                <div className="mt-4 flex justify-end space-x-2">
+                    <button 
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                    >
+                        {isExpanded ? 'Hide Details' : 'Show Details'}
+                    </button>
+                    <button 
+                        onClick={() => onDeleteCow(cow.id)}
+                        className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
+                    >
+                        Remove from Pasture
+                    </button>
+                </div>
+            </div>
+            {isExpanded && (
+                <div className="p-4 border-t border-gray-200">
+                    {cow.image_url && (
+                        <div className="w-full h-48 relative mb-4">
+                            <Image
+                                src={cow.image_url}
+                                alt={`${cow.breed} cow`}
+                                layout="fill"
+                                style={{ objectFit: 'cover' }}
+                            />
+                        </div>
+                    )}
+                    <div>
+                        <p className="text-sm text-brandGray">Age: {cow.age}</p>
+                        <p className="text-sm text-brandGray">Notes: {cow.notes}</p>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
 
 const PasturePage: React.FC = () => {
     const params = useParams();
@@ -57,11 +102,10 @@ const PasturePage: React.FC = () => {
     
                 if (!response.ok) {
                     const errorData = await response.json();
-                    console.error('Delete Error:', errorData); // Log delete error details
+                    console.error('Delete Error:', errorData);
                     throw new Error(errorData.error || 'Failed to remove cow');
                 }
     
-                // Refresh pasture data after removal
                 setPastureData((prev) => ({
                     ...prev!,
                     cows: prev!.cows.filter(cow => cow.id !== cowId),
@@ -77,12 +121,15 @@ const PasturePage: React.FC = () => {
     if (!pastureData) return <p>Loading...</p>;
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-3xl font-bold mb-6">{pastureData.name}</h1>
-            <CowsForPasture 
-                cows={pastureData.cows} 
-                onDeleteCow={handleDeleteCow} // Pass the delete handler to the component
-            />
+        <div className="bg-brandLightGreen">
+            <div className="container mx-auto p-4">
+                <h1 className="text-3xl font-bold mb-6">{pastureData.name}</h1>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {pastureData.cows.map((cow) => (
+                        <CowCard key={cow.id} cow={cow} onDeleteCow={handleDeleteCow} />
+                    ))}
+                </div>
+            </div>
         </div>
     );
 };

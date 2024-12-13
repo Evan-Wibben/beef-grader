@@ -30,38 +30,41 @@ const PasturesPage: React.FC = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-3xl font-bold mb-6">My Pastures</h1>
+        <div className='bg-brandLightGreen'>
+            <div className="container mx-auto p-4">
+                <h1 className="text-3xl font-bold mb-6">My Pastures</h1>
 
-            <form onSubmit={handleAddPasture} className="mb-6">
-                <input
-                    type="text"
-                    value={newPastureName}
-                    onChange={(e) => setNewPastureName(e.target.value)}
-                    placeholder="Enter new pasture name"
-                    className="border p-2 mr-2"
-                />
-                <button type="submit" className="bg-brandBrown text-white p-2 rounded">
-                    Add Pasture
-                </button>
-            </form>
+                <form onSubmit={handleAddPasture} className="mb-6">
+                    <input
+                        type="text"
+                        value={newPastureName}
+                        onChange={(e) => setNewPastureName(e.target.value)}
+                        placeholder="Enter new pasture name"
+                        className="border p-2 mr-2"
+                    />
+                    <button type="submit" className="bg-brandBrown text-white p-2 rounded">
+                        Add Pasture
+                    </button>
+                </form>
 
-            <ul className="space-y-2">
-                {pastures.map((pasture) => (
-                    <li key={pasture.id} className="bg-white shadow rounded-lg p-4 flex justify-between items-center">
-                        <Link href={`/pastures/${pasture.id}`}>
-                            <span className="hover:underline">{pasture.name}</span>
-                        </Link>
-                        <button 
-                            onClick={() => handleDeletePasture(pasture.id)}
-                            className="bg-red-500 text-white p-2 rounded hover:bg-red-600"
-                        >
-                            Delete
-                        </button>
-                    </li>
-                ))}
-            </ul>
+                <ul className="space-y-2">
+                    {pastures.map((pasture) => (
+                        <li key={pasture.id} className="bg-white shadow rounded-lg p-4 flex justify-between items-center">
+                            <Link href={`/pastures/${pasture.id}`}>
+                                <span className="hover:underline">{pasture.name}</span>
+                            </Link>
+                            <button 
+                                onClick={() => handleDeletePasture(pasture.id)}
+                                className="bg-red-500 text-white p-2 rounded hover:bg-red-600"
+                            >
+                                Delete
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
+        
     );
 };
 
