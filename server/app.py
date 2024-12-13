@@ -1,4 +1,3 @@
-
 from flask import Flask, request, jsonify
 import base64
 import numpy as np
@@ -34,7 +33,7 @@ def predict():
     img = tf.image.resize(img, (256, 256))
     img = np.expand_dims(img / 255.0, 0)
     
-    # Make prediction using your model
+    # Make prediction
     prediction = model.predict(img)
     predicted_class = np.argmax(prediction)
     

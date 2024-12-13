@@ -16,7 +16,7 @@ interface CowDetailsType {
     notes: string | null;
     bcs_score: string | null;
     userId: string;
-    pastureId?: number; // Made optional
+    pastureId?: number; 
     imagePath: string | null;
 }
 
@@ -82,10 +82,58 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
         }
     };
 
+    function getClassificationColor(classification: string | null) {
+        switch(classification) {
+            case 'Beef 1-3':
+            case 'Beef 8-9':
+                return 'bg-red-500';
+            case 'Beef 4':
+            case 'Beef 7':
+                return 'bg-yellow-500';
+            case 'Beef 5':
+            case 'Beef 6':
+                return 'bg-green-500';
+            default:
+                return 'bg-gray-500';
+        }
+    }
+
     return (
         <form onSubmit={handleSubmit} className="space-y-4" ref={formRef}>
             {errorMessage && <div className="text-red-500">{errorMessage}</div>}
             
+            {classification && (
+                <div className="flex items-center justify-center my-4">
+                    <div className={`
+                        relative 
+                        w-32 
+                        h-32 
+                        flex 
+                        items-center 
+                        justify-center 
+                        rounded-full 
+                        ${getClassificationColor(classification)}
+                    `}>
+                        <input
+                            type="text"
+                            value={classification}
+                            readOnly
+                            className="
+                                text-lg 
+                                font-bold 
+                                text-center 
+                                bg-white 
+                                rounded-full 
+                                w-24
+                                h-24 
+                                border-none 
+                                focus:outline-none
+                            "
+                        />
+                    </div>
+                </div>
+            )}
+
             <div>
                 <label className="block text-sm font-medium text-gray-700">Tag Number</label>
                 <input
@@ -98,7 +146,7 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Age</label>
+                <label className="block text-sm font-medium text-gray-700">Age (Optional)</label>
                 <input
                     type="number"
                     value={age}
@@ -122,7 +170,7 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Notes</label>
+                <label className="block text-sm font-medium text-gray-700">Notes (Optional)</label>
                 <textarea
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
@@ -131,17 +179,6 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
                 />
             </div>
 
-            {classification && (
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">BCS Score</label>
-                    <input
-                        type="text"
-                        value={classification}
-                        readOnly
-                        className="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100"
-                    />
-                </div>
-            )}
 
             <button 
                 type="submit"

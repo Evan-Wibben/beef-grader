@@ -18,12 +18,31 @@ interface Cow {
 const CowCard: React.FC<{ cow: Cow; handleDelete: (id: number) => void }> = ({ cow, handleDelete }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
+    function getClassificationColor(classification: string | null) {
+        switch (classification) {
+            case 'Beef 1-3':
+            case 'Beef 8-9':
+                return 'bg-red-500';
+            case 'Beef 4':
+            case 'Beef 7':
+                return 'bg-yellow-500';
+            case 'Beef 5':
+            case 'Beef 6':
+                return 'bg-green-500';
+            default:
+                return 'bg-gray-500';
+        }
+    }
+
     return (
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
             <div className="p-4">
                 <div className="flex justify-between items-center">
                     <h3 className="text-lg font-medium text-gray-900">Tag #: {cow.breed}</h3>
-                    <p className="text-sm text-gray-600">BCS Score: {cow.bcs_score}</p>
+                    <div className="flex items-center">
+                        <span className={`w-3 h-3 rounded-full ${getClassificationColor(cow.bcs_score)}`} />
+                        <p className="text-sm text-gray-600 ml-2">BCS Score: {cow.bcs_score}</p>
+                    </div>
                 </div>
                 <div className="mt-4 flex justify-end space-x-2">
                     <button 
@@ -62,7 +81,6 @@ const CowCard: React.FC<{ cow: Cow; handleDelete: (id: number) => void }> = ({ c
         </div>
     );
 };
-
 
 const RecordsPage: React.FC = () => {
     const [cows, setCows] = useState<Cow[]>([]);

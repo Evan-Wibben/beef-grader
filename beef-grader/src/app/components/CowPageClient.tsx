@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 
 interface CowDetailsType {
     breed: string;
-    age: number | null;
+    age?: number | null;
     pasture: string | null;
     notes: string | null;
     bcs_score: string | null;
