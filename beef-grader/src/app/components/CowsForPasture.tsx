@@ -25,7 +25,7 @@ const CowsForPasture: React.FC<CowsForPastureProps> = ({ cows, onDeleteCow }) =>
                             <Image
                                 src={cow.image_url}
                                 alt={`${cow.breed} cow`}
-                                layout="fill"
+                                fill
                                 style={{ objectFit: 'cover' }}
                             />
                         </div>

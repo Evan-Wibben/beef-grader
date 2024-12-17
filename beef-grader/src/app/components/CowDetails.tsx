@@ -99,36 +99,19 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4" ref={formRef}>
+        <form onSubmit={handleSubmit} className="space-y-4 block-container" ref={formRef}>
             {errorMessage && <div className="text-red-500">{errorMessage}</div>}
             
             {classification && (
                 <div className="flex items-center justify-center my-4">
-                    <div className={`
-                        relative 
-                        w-32 
-                        h-32 
-                        flex 
-                        items-center 
-                        justify-center 
-                        rounded-full 
+                    <div className={`relative w-32 h-32 flex items-center justify-center rounded-full 
                         ${getClassificationColor(classification)}
                     `}>
                         <input
                             type="text"
                             value={classification}
                             readOnly
-                            className="
-                                text-lg 
-                                font-bold 
-                                text-center 
-                                bg-white 
-                                rounded-full 
-                                w-24
-                                h-24 
-                                border-none 
-                                focus:outline-none
-                            "
+                            className="text-lg font-bold text-center bg-white rounded-full w-24 h-24 border-none focus:outline-none"
                         />
                     </div>
                 </div>
@@ -140,7 +123,7 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
                     type="text"
                     value={breed}
                     onChange={(e) => setBreed(e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                    className="mt-1 block w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-brandGreen focus:border-transparent outline-none transition duration-200 ease-in-out"
                     required
                 />
             </div>
@@ -151,7 +134,7 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
                     type="number"
                     value={age}
                     onChange={(e) => setAge(e.target.value === '' ? '' : Number(e.target.value))}
-                    className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                    className="mt-1 block w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-brandGreen focus:border-transparent outline-none transition duration-200 ease-in-out"
                 />
             </div>
 
@@ -174,7 +157,7 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
                 <textarea
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                    className="mt-1 block w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-brandGreen focus:border-transparent outline-none transition duration-200 ease-in-out"
                     rows={4}
                 />
             </div>

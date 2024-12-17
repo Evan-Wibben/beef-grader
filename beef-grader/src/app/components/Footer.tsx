@@ -16,7 +16,7 @@ const Footer: React.FC = () => (
                   />
                 </div>
                 <div>
-                    <h2 className="text-xl font-bold mb-4">Quick Links</h2>
+                    <h2 className="text-xl font-bold mb-4">- Quick Links -</h2>
                     <ul className="space-y-2 text-center">
                         {['Home', 'Pastures', 'Records', 'Submit Cow'].map((item) => (
                             <li key={item}>
@@ -33,7 +33,7 @@ const Footer: React.FC = () => (
             </div>
 
             {/* Copyright Section */}
-            <div className="mt-8 border-t border-white pt-4 text-center text-sm">
+            <div className="mt-8 border-white text-center text-sm italic">
                 &copy; {new Date().getFullYear()} Paulsen
             </div>
         </div>

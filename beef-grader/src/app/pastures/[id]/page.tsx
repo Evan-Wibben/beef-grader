@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
-import withAuth from '../../components/withAuth'
+import withAuth from '../../components/withAuth';
+import Hero from '../../components/Hero';
 
 interface Cow {
     id: number;
@@ -20,9 +21,12 @@ interface PastureData {
     cows: Cow[];
 }
 
-const CowCard: React.FC<{ cow: Cow; onDeleteCow: (id: number) => void }> = ({ cow, onDeleteCow }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
-
+const CowCard: React.FC<{ 
+    cow: Cow; 
+    onDeleteCow: (id: number) => void;
+    isExpanded: boolean;
+    onExpand: (id: number) => void;
+}> = ({ cow, onDeleteCow, isExpanded, onExpand }) => {
     function getClassificationColor(classification: string | null) {
         switch (classification) {
             case 'Beef 1-3':
@@ -40,7 +44,7 @@ const CowCard: React.FC<{ cow: Cow; onDeleteCow: (id: number) => void }> = ({ co
     }
 
     return (
-        <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col h-fit">
             <div className="p-4">
                 <div className="flex justify-between items-center">
                     <h3 className="text-lg font-medium text-gray-900">Tag #: {cow.breed}</h3>
@@ -51,7 +55,7 @@ const CowCard: React.FC<{ cow: Cow; onDeleteCow: (id: number) => void }> = ({ co
                 </div>
                 <div className="mt-4 flex justify-end space-x-2">
                     <button 
-                        onClick={() => setIsExpanded(!isExpanded)}
+                        onClick={() => onExpand(cow.id)}
                         className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
                     >
                         {isExpanded ? 'Hide Details' : 'Show Details'}
@@ -67,16 +71,16 @@ const CowCard: React.FC<{ cow: Cow; onDeleteCow: (id: number) => void }> = ({ co
             {isExpanded && (
                 <div className="p-4 border-t border-gray-200">
                     {cow.image_url && (
-                        <div className="w-full h-48 relative mb-4">
+                        <div className="w-full h-64 relative mb-2">
                             <Image
                                 src={cow.image_url}
-                                alt={`${cow.breed} cow`}
-                                layout="fill"
-                                style={{ objectFit: 'cover' }}
+                                alt={`Cow tag ${cow.breed}`}
+                                fill
+                                style={{ objectFit: 'contain' }}
                             />
                         </div>
                     )}
-                    <div>
+                    <div className='bg-brandLightGreen rounded-lg p-2'>
                         <p className="text-sm text-brandGray">Age: {cow.age}</p>
                         <p className="text-sm text-brandGray">Notes: {cow.notes}</p>
                     </div>
@@ -91,6 +95,7 @@ const PasturePage: React.FC = () => {
     const id = params.id as string;
     const [pastureData, setPastureData] = useState<PastureData | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [expandedCowId, setExpandedCowId] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchPastureData = async () => {
@@ -136,16 +141,28 @@ const PasturePage: React.FC = () => {
         }
     };
 
+    const handleExpand = (cowId: number) => {
+        setExpandedCowId(prevId => prevId === cowId ? null : cowId);
+    };
+
     if (error) return <p className="text-red-500">{error}</p>;
     if (!pastureData) return <p>Loading...</p>;
 
     return (
         <div className="bg-brandLightGreen">
             <div className="container mx-auto p-4">
-                <h1 className="text-3xl font-bold mb-6">{pastureData.name}</h1>
+                <Hero 
+                    title={pastureData.name}
+                />
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {pastureData.cows.map((cow) => (
-                        <CowCard key={cow.id} cow={cow} onDeleteCow={handleDeleteCow} />
+                        <CowCard 
+                            key={cow.id} 
+                            cow={cow} 
+                            onDeleteCow={handleDeleteCow}
+                            isExpanded={expandedCowId === cow.id}
+                            onExpand={handleExpand}
+                        />
                     ))}
                 </div>
             </div>

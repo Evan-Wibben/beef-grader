@@ -64,14 +64,13 @@ const CameraComponent: React.FC<CameraComponentProps> = ({ setClassification, se
     };
 
     return (
-        <div className="flex flex-col items-center p-6">
-            <h2 className="text-2xl font-bold mb-4">Take a Photo</h2>
-            <button
-                onClick={takePhoto}
-                className="bg-brandGreen text-white px-4 py-2 rounded-lg shadow-md hover:bg-brandBrown transition duration-300"
-            >
-                Open Camera
-            </button>
+        <div className="flex flex-col items-center py-6">
+            <div className='border-dashed border-[8px] border-brandGreen rounded-lg px-[100px] md:px-32 lg:px-64 py-20 md:py-24 lg:py-32'>
+                <button onClick={takePhoto} className="bg-brandGreen text-white px-4 py-2 rounded-lg shadow-md hover:bg-brandBrown transition duration-300">
+                    Open Camera
+                </button>
+            </div>
+            
             {image && (
                 <div className="mt-4">
                     <img src={`data:image/jpeg;base64,${image}`} alt="Captured" className="rounded-lg shadow-lg" />

@@ -52,7 +52,7 @@ const Navigation: React.FC = () => {
 
     return (
         <nav className="bg-brandGreen text-white shadow-lg pt-10">
-            <div className="block-container py-4">
+            <div className="block-container py-4 px-8">
                 <div className="flex justify-between items-center">
                     <Link href="/" className="flex items-center space-x-3">
                         <span className="text-2xl font-extrabold tracking-tight">
@@ -79,9 +79,9 @@ const Navigation: React.FC = () => {
                         ))}
                         {/* Add Sign Out Option */}
                         <li className="p-2 transition duration=300 relative group m= 00">
-                            <button onClick={handleSignOut} className="text-white text-lg font-medium relative py= 01">
+                            <SignOutButton href="/login" onClick={handleSignOut}>
                                 Sign Out
-                            </button>
+                            </SignOutButton>
                         </li>
                     </ul>
                     <div className="md:hidden">
@@ -94,7 +94,7 @@ const Navigation: React.FC = () => {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div initial="closed" animate="open" exit="closed" variants={menuVariants}
-                                className="md:hidden overflow-hidden block-container py-2">
+                                className="md:hidden overflow-hidden block-container px-8 py-2">
                         <motion.ul className="flex flex-col">
                             {navItems.map((item) => (
                                 <motion.li key={item} variants={itemVariants} className="border-t border-brandLightGreen/50">

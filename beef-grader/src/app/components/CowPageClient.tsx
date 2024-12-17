@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import CameraComponent from './CameraComp';
 import CowDetailsClient from './CowDetailsClient';
 import Cookies from 'js-cookie';
+import Hero from '../components/Hero';
 
 interface CowDetailsType {
     breed: string;
@@ -61,7 +62,9 @@ const CowForm: React.FC = () => {
     return (
         <div className='bg-brandLightGreen'>
             <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">Add Cow Details</h1>
+            <Hero 
+                    title="Create Record" 
+                />
             <CameraComponent 
                 setClassification={setClassification}
                 setImagePath={setImagePath}

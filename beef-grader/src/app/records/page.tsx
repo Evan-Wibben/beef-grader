@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import Image from 'next/image';
 import withAuth from '../components/withAuth';
+import Hero from '../components/Hero';
 
 interface Cow {
     id: number;
@@ -15,9 +16,12 @@ interface Cow {
     image_url: string | null;
 }
 
-const CowCard: React.FC<{ cow: Cow; handleDelete: (id: number) => void }> = ({ cow, handleDelete }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
-
+const CowCard: React.FC<{ 
+    cow: Cow; 
+    handleDelete: (id: number) => void;
+    isExpanded: boolean;
+    onExpand: (id: number) => void;}> = ({ cow, handleDelete, isExpanded, onExpand }) => {
+    
     function getClassificationColor(classification: string | null) {
         switch (classification) {
             case 'Beef 1-3':
@@ -35,7 +39,7 @@ const CowCard: React.FC<{ cow: Cow; handleDelete: (id: number) => void }> = ({ c
     }
 
     return (
-        <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col h-fit">
             <div className="p-4">
                 <div className="flex justify-between items-center">
                     <h3 className="text-lg font-medium text-gray-900">Tag #: {cow.breed}</h3>
@@ -46,7 +50,7 @@ const CowCard: React.FC<{ cow: Cow; handleDelete: (id: number) => void }> = ({ c
                 </div>
                 <div className="mt-4 flex justify-end space-x-2">
                     <button 
-                        onClick={() => setIsExpanded(!isExpanded)}
+                        onClick={() => onExpand(cow.id)}
                         className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
                     >
                         {isExpanded ? 'Hide Details' : 'Show Details'}
@@ -62,16 +66,16 @@ const CowCard: React.FC<{ cow: Cow; handleDelete: (id: number) => void }> = ({ c
             {isExpanded && (
                 <div className="p-4 border-t border-gray-200">
                     {cow.image_url && (
-                        <div className="w-full h-48 relative mb-4">
+                        <div className="w-full h-64 relative mb-2">
                             <Image
                                 src={cow.image_url}
-                                alt={`${cow.breed} cow`}
-                                layout="fill"
-                                style={{ objectFit: 'cover' }}
+                                alt={`Cow tag ${cow.breed}`}
+                                fill
+                                style={{ objectFit: 'contain' }}
                             />
                         </div>
                     )}
-                    <div>
+                    <div className='bg-brandLightGreen rounded-lg p-2'>
                         <p className="text-sm text-brandGray">Age: {cow.age}</p>
                         <p className="text-sm text-brandGray">Pasture: {cow.pasture || 'No Pasture'}</p>
                         <p className="text-sm text-brandGray">Notes: {cow.notes}</p>
@@ -86,6 +90,8 @@ const RecordsPage: React.FC = () => {
     const [cows, setCows] = useState<Cow[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [expandedCowId, setExpandedCowId] = useState<number | null>(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const fetchCows = async () => {
         const userId = Cookies.get('userId');
@@ -134,17 +140,43 @@ const RecordsPage: React.FC = () => {
         }
     };
 
-    // Return content for frontend
+    const handleExpand = (cowId: number) => {
+        setExpandedCowId(prevId => prevId === cowId ? null : cowId);
+    };
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const filteredCows = searchTerm
+        ? cows.filter(cow => cow.breed.toLowerCase().includes(searchTerm.toLowerCase()))
+        : cows;
+
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
     return (
         <div className='bg-brandLightGreen'>
             <div className="container mx-auto p-4">
-                <h1 className="text-3xl font-bold mb-6">Cow Records</h1>
+                <Hero title="Records" />
+                <div className="mb-4">
+                    <input
+                        type="text"
+                        placeholder="Search by tag number..."
+                        value={searchTerm}
+                        onChange={handleSearch}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandGreen"
+                    />
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {cows.map((cow) => (
-                        <CowCard key={cow.id} cow={cow} handleDelete={handleDelete} />
+                    {filteredCows.map((cow) => (
+                        <CowCard
+                            key={cow.id}
+                            cow={cow}
+                            handleDelete={handleDelete}
+                            isExpanded={expandedCowId === cow.id}
+                            onExpand={handleExpand}
+                        />
                     ))}
                 </div>
             </div>
