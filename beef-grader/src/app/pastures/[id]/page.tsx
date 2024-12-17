@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import withAuth from '../../components/withAuth';
 import Hero from '../../components/Hero';
+import PieChart from '../../components/PieChart';
 
 interface Cow {
     id: number;
@@ -154,6 +155,9 @@ const PasturePage: React.FC = () => {
                 <Hero 
                     title={pastureData.name}
                 />
+
+                <PieChart cows={pastureData.cows} />
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {pastureData.cows.map((cow) => (
                         <CowCard 
