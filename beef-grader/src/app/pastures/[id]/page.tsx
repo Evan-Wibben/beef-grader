@@ -1,11 +1,10 @@
-'use client';
+export const dynamic = 'force-static'
 
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import React from 'react';
 import Image from 'next/image';
-import withAuth from '../../components/withAuth';
 import Hero from '../../components/Hero';
 import PieChart from '../../components/PieChart';
+import pool from '../../../lib/db'; // Adjust the path as needed
 
 interface Cow {
     id: number;
@@ -22,12 +21,7 @@ interface PastureData {
     cows: Cow[];
 }
 
-const CowCard: React.FC<{ 
-    cow: Cow; 
-    onDeleteCow: (id: number) => void;
-    isExpanded: boolean;
-    onExpand: (id: number) => void;
-}> = ({ cow, onDeleteCow, isExpanded, onExpand }) => {
+const CowCard: React.FC<{ cow: Cow }> = ({ cow }) => {
     function getClassificationColor(classification: string | null) {
         switch (classification) {
             case 'Beef 1-3':
@@ -54,124 +48,78 @@ const CowCard: React.FC<{
                         <p className="text-sm text-gray-600 ml-2">BCS Score: {cow.bcs_score}</p>
                     </div>
                 </div>
-                <div className="mt-4 flex justify-end space-x-2">
-                    <button 
-                        onClick={() => onExpand(cow.id)}
-                        className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-                    >
-                        {isExpanded ? 'Hide Details' : 'Show Details'}
-                    </button>
-                    <button 
-                        onClick={() => onDeleteCow(cow.id)}
-                        className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
-                    >
-                        Remove from Pasture
-                    </button>
+                {cow.image_url && (
+                    <div className="w-full h-64 relative mt-2">
+                        <Image
+                            src={cow.image_url}
+                            alt={`Cow tag ${cow.breed}`}
+                            fill
+                            style={{ objectFit: 'contain' }}
+                        />
+                    </div>
+                )}
+                <div className='bg-brandLightGreen rounded-lg p-2 mt-2'>
+                    <p className="text-sm text-brandGray">Age: {cow.age}</p>
+                    <p className="text-sm text-brandGray">Notes: {cow.notes}</p>
                 </div>
             </div>
-            {isExpanded && (
-                <div className="p-4 border-t border-gray-200">
-                    {cow.image_url && (
-                        <div className="w-full h-64 relative mb-2">
-                            <Image
-                                src={cow.image_url}
-                                alt={`Cow tag ${cow.breed}`}
-                                fill
-                                style={{ objectFit: 'contain' }}
-                            />
-                        </div>
-                    )}
-                    <div className='bg-brandLightGreen rounded-lg p-2'>
-                        <p className="text-sm text-brandGray">Age: {cow.age}</p>
-                        <p className="text-sm text-brandGray">Notes: {cow.notes}</p>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
 
-const PasturePage: React.FC = () => {
-    const params = useParams();
-    const id = params.id as string;
-    const [pastureData, setPastureData] = useState<PastureData | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [expandedCowId, setExpandedCowId] = useState<number | null>(null);
+interface PasturePageProps {
+    params: Promise<{ id: string }>;
+  }
 
-    useEffect(() => {
-        const fetchPastureData = async () => {
-            try {
-                const response = await fetch(`/api/pastures/${id}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch pasture');
-                }
-                const data = await response.json();
-                setPastureData(data);
-            } catch (err) {
-                console.error(err);
-                setError('Could not load pasture details.');
-            }
-        };
+  export default async function PasturePage({ params }: PasturePageProps) {
+    const { id } = await params;
+    const pastureData = await getPastureData(id);
 
-        if (id) {
-            fetchPastureData();
-        }
-    }, [id]);
-
-    const handleDeleteCow = async (cowId: number) => {
-        if (confirm('Are you sure you want to remove this cow from the pasture?')) {
-            try {
-                const response = await fetch(`/api/pastures/${id}?cowId=${cowId}`, {
-                    method: 'DELETE',
-                });
-    
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Delete Error:', errorData);
-                    throw new Error(errorData.error || 'Failed to remove cow');
-                }
-    
-                setPastureData((prev) => ({
-                    ...prev!,
-                    cows: prev!.cows.filter(cow => cow.id !== cowId),
-                }));
-            } catch (err) {
-                console.error(err);
-                alert('Error removing cow record');
-            }
-        }
-    };
-
-    const handleExpand = (cowId: number) => {
-        setExpandedCowId(prevId => prevId === cowId ? null : cowId);
-    };
-
-    if (error) return <p className="text-red-500">{error}</p>;
-    if (!pastureData) return <p>Loading...</p>;
+    if (!pastureData) {
+        return <p>Pasture not found</p>;
+    }
 
     return (
         <div className="bg-brandLightGreen">
             <div className="container mx-auto p-4">
-                <Hero 
-                    title={pastureData.name}
-                />
-
+                <Hero title={pastureData.name} />
                 <PieChart cows={pastureData.cows} />
-
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {pastureData.cows.map((cow) => (
-                        <CowCard 
-                            key={cow.id} 
-                            cow={cow} 
-                            onDeleteCow={handleDeleteCow}
-                            isExpanded={expandedCowId === cow.id}
-                            onExpand={handleExpand}
-                        />
+                        <CowCard key={cow.id} cow={cow} />
                     ))}
                 </div>
             </div>
         </div>
     );
-};
+}
 
-export default withAuth(PasturePage);
+async function getPastureData(id: string): Promise<PastureData | null> {
+    try {
+        const pastureResult = await pool.query('SELECT * FROM pastures WHERE id = $1', [id]);
+        if (pastureResult.rows.length === 0) {
+            return null;
+        }
+        const pasture = pastureResult.rows[0];
+        const cowsResult = await pool.query('SELECT id, breed, age, notes, bcs_score, image_url FROM cows WHERE pasture_id = $1', [id]);
+        return {
+            ...pasture,
+            cows: cowsResult.rows,
+        };
+    } catch (error) {
+        console.error('Error fetching pasture data:', error);
+        return null;
+    }
+}
+
+export async function generateStaticParams() {
+    try {
+        const result = await pool.query('SELECT id FROM pastures');
+        return result.rows.map(row => ({
+            id: row.id.toString()
+        }));
+    } catch (error) {
+        console.error('Error generating static params:', error);
+        return [];
+    }
+}

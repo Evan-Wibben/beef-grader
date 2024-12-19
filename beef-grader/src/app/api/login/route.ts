@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 import bcrypt from 'bcrypt';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-static';
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,

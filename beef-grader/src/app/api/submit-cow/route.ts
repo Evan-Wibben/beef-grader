@@ -1,6 +1,5 @@
 import { Pool } from 'pg';
 
-export const dynamic = "force-dynamic";
 
 let pool: Pool;
 

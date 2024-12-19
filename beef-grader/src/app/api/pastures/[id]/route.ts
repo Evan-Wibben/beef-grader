@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import pool from '../../../../lib/db';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-static';
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -48,3 +48,8 @@ export async function DELETE(request: Request) {
         return new Response(JSON.stringify({ error: 'Failed to remove cow from pasture.' }), { status: 500 });
     }
 }
+
+export async function generateStaticParams() {
+    const result = await pool.query('SELECT id FROM pastures');
+    return result.rows.map(row => ({ id: row.id.toString() }));
+  }

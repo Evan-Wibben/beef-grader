@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import pool from '../../../lib/db';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-static';
 
 // Handle GET requests
 export async function GET(request: Request) {
