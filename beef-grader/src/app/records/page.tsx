@@ -38,6 +38,16 @@ const CowCard: React.FC<{
         }
     }
 
+    const getBCSScore = (score: string) => {
+        if (score === 'Beef 1-3') return '1-3';
+        if (score === 'Beef 4') return '4';
+        if (score === 'Beef 5') return '5';
+        if (score === 'Beef 6') return '6';
+        if (score === 'Beef 7') return '7';
+        if (score === 'Beef 8-9') return '8-9';
+        return score;
+      }
+
     return (
         <div className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col h-fit">
             <div className="p-4">
@@ -45,7 +55,7 @@ const CowCard: React.FC<{
                     <h3 className="text-lg font-medium text-gray-900">Tag #: {cow.breed}</h3>
                     <div className="flex items-center">
                         <span className={`w-3 h-3 rounded-full ${getClassificationColor(cow.bcs_score)}`} />
-                        <p className="text-sm text-gray-600 ml-2">BCS Score: {cow.bcs_score}</p>
+                        <p className="text-md font-bold ml-2">BCS Score: {getBCSScore(cow.bcs_score)}</p>
                     </div>
                 </div>
                 <div className="mt-4 flex justify-end space-x-2">

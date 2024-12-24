@@ -44,6 +44,16 @@ const CowCard: React.FC<{
         }
     }
 
+    const getBCSScore = (score: string) => {
+        if (score === 'Beef 1-3') return '1-3';
+        if (score === 'Beef 4') return '4';
+        if (score === 'Beef 5') return '5';
+        if (score === 'Beef 6') return '6';
+        if (score === 'Beef 7') return '7';
+        if (score === 'Beef 8-9') return '8-9';
+        return score;
+    }
+
     return (
         <div className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col h-fit">
             <div className="p-4">
@@ -51,7 +61,7 @@ const CowCard: React.FC<{
                     <h3 className="text-lg font-medium text-gray-900">Tag #: {cow.breed}</h3>
                     <div className="flex items-center">
                         <span className={`w-3 h-3 rounded-full ${getClassificationColor(cow.bcs_score)}`} />
-                        <p className="text-sm text-gray-600 ml-2">BCS Score: {cow.bcs_score}</p>
+                        <p className="text-md font-bold ml-2">BCS Score: {getBCSScore(cow.bcs_score)}</p>
                     </div>
                 </div>
                 <div className="mt-4 flex justify-end space-x-2">
@@ -97,6 +107,7 @@ const PasturePage: React.FC = () => {
     const [pastureData, setPastureData] = useState<PastureData | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [expandedCowId, setExpandedCowId] = useState<number | null>(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         const fetchPastureData = async () => {
@@ -146,6 +157,16 @@ const PasturePage: React.FC = () => {
         setExpandedCowId(prevId => prevId === cowId ? null : cowId);
     };
 
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+            setSearchTerm(e.target.value);
+        };
+    
+    const filteredCows = pastureData ? (searchTerm 
+        ? pastureData.cows.filter(cow => cow.breed.toLowerCase().includes(searchTerm.toLowerCase())) 
+        : pastureData.cows) 
+        : [];
+        
+
     if (error) return <p className="text-red-500">{error}</p>;
     if (!pastureData) return <p>Loading...</p>;
 
@@ -158,16 +179,26 @@ const PasturePage: React.FC = () => {
 
                 <PieChart cows={pastureData.cows} />
 
+                <div className="mb-4">
+                    <input
+                        type="text"
+                        placeholder="Search by tag number..."
+                        value={searchTerm}
+                        onChange={handleSearch}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandGreen"
+                    />
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {pastureData.cows.map((cow) => (
-                        <CowCard 
-                            key={cow.id} 
-                            cow={cow} 
-                            onDeleteCow={handleDeleteCow}
-                            isExpanded={expandedCowId === cow.id}
-                            onExpand={handleExpand}
-                        />
-                    ))}
+                {filteredCows.map((cow) => (
+                    <CowCard 
+                        key={cow.id} 
+                        cow={cow} 
+                        onDeleteCow={handleDeleteCow}
+                        isExpanded={expandedCowId === cow.id}
+                        onExpand={handleExpand}
+                    />
+                ))}
                 </div>
             </div>
         </div>
