@@ -29,14 +29,16 @@ const LineChart: React.FC<LineChartProps> = ({ cows }) => {
             borderColor: string[]; 
             backgroundColor: string[];
             pointRadius: number; 
+            pointBackgroundColor: string[];
         }[];
     }>({
         labels: [],
         datasets: [{
             data: [],
             borderColor: [],
-            backgroundColor: [], 
-            pointRadius: 6
+            backgroundColor: [],
+            pointBackgroundColor: [],
+            pointRadius: 6 
         }]
     });
 
@@ -46,29 +48,41 @@ const LineChart: React.FC<LineChartProps> = ({ cows }) => {
         }
 
         const sortedCows = [...cows].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
-        
-        const data = sortedCows.map(cow => {
-            if (!cow || !cow.created_at) {
-                return null;
-            }
-        
+
+        const dailyBCSMap = new Map<string, { totalScore: number; count: number }>();
+
+        sortedCows.forEach(cow => {
+            if (!cow || !cow.created_at) return;
+
             const bcsScore = parseBCSScore(cow.bcs_score);
-            const date = parseISO(cow.created_at);
-            if (!isValid(date)) {
-                return null;
+            const date = format(parseISO(cow.created_at), 'yyyy-MM-dd');
+
+            if (!isValid(parseISO(cow.created_at))) return;
+
+            if (!dailyBCSMap.has(date)) {
+                dailyBCSMap.set(date, { totalScore: 0, count: 0 });
             }
 
-            return { x: date, y: bcsScore };
-        }).filter((item): item is { x: Date; y: number } => item !== null);
-        
-        const pointColors = data.map(item => getColorForBCS(item.y));
+            const entry = dailyBCSMap.get(date)!;
+            entry.totalScore += bcsScore;
+            entry.count += 1;
+        });
+
+        const labels = Array.from(dailyBCSMap.keys());
+        const averagedData = labels.map(date => {
+            const entry = dailyBCSMap.get(date)!;
+            return { x: new Date(date), y: entry.totalScore / entry.count };
+        });
+
+        const pointColors = averagedData.map(item => getColorForBCS(item.y));
 
         setChartData({
-            labels: data.map(item => format(item.x, 'MM/dd/yyyy')),
+            labels,
             datasets: [{
-                data,
-                borderColor: Array(data.length).fill('rgba(0, 0, 0, .3)'),
-                backgroundColor: pointColors.map(color => color.replace(/rgba\((\d+), (\d+), (\d+), (\d+)\)/, (match, r, g, b) => `rgba(${r}, ${g}, ${b}, 1)`)),
+                data: averagedData,
+                borderColor: Array(labels.length).fill('rgba(0, 0, 0, .4)'), 
+                backgroundColor: pointColors.map(color => color.replace(/rgba\((\d+), (\d+), (\d+), (\d+)\)/, (match, r, g, b) => `rgba(${r}, ${g}, ${b}, 0.2)`)),
+                pointBackgroundColor: pointColors,
                 pointRadius: 6
             }]
         });
@@ -92,18 +106,18 @@ const LineChart: React.FC<LineChartProps> = ({ cows }) => {
                 },
                 title: {
                     display: true,
-                    text: 'BCS Score'
+                    text: 'Average BCS Score'
                 }
             }
         },
         plugins: {
             legend: {
-                display: false, // Hide the legend completely
+                display: false,
             },
             tooltip: {
                 callbacks: {
                     label(context: TooltipItem<'line'>) {
-                        return `BCS Score: ${context.parsed.y}`;
+                        return `Average BCS Score: ${context.parsed.y}`;
                     }
                 }
             }
@@ -112,7 +126,7 @@ const LineChart: React.FC<LineChartProps> = ({ cows }) => {
 
     return (
         <div className='pb-8'>
-            <h2 className="text-center">BCS Progression</h2>
+            <h2 className="text-center">Average BCS Progression</h2>
             <div className='h-64 flex flex-col items-center'>
                 {chartData.datasets[0].data.length > 0 ? (
                     <Line data={chartData} options={options} />
@@ -126,11 +140,11 @@ const LineChart: React.FC<LineChartProps> = ({ cows }) => {
 
 function getColorForBCS(score: number): string {
     if (score >= 1 && score <= 3) return 'rgba(220, 38, 38, 1)';
-    if (score === 4) return 'rgba(255, 206, 86, 1)';
-    if (score === 5) return 'rgba(187, 221, 54, 1)';
-    if (score === 6) return 'rgba(90, 130, 43, 1)';
-    if (score === 7) return 'rgba(54, 162, 235, 1)';
-    if (score >= 8 && score <= 9) return 'rgba(220, 38, 38, .5)';
+    if (score >= 4 && score <= 4.9) return 'rgba(255, 206, 86, 1)';
+    if (score >= 5 && score <= 5.9) return 'rgba(75, 192, 192, 1)';
+    if (score >= 6 && score <= 6.9) return 'rgba(90, 130, 43, 1)';
+    if (score >= 7 && score <= 7.9) return 'rgba(54, 162, 235, 1)';
+    if (score >= 8 && score <= 9) return 'rgba(0, 128, 0, 1)';
     return 'rgba(128, 128, 128, 1)';
 }
 
