@@ -18,6 +18,7 @@ interface CowDetailsType {
     userId: string;
     pastureId?: number; 
     imagePath: string | null;
+    created_at: string;
 }
 
 const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, imagePath }) => {
@@ -65,7 +66,8 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
             bcs_score: classification,
             userId: '', 
             pastureId: selectedPasture?.id, // Use optional chaining
-            imagePath: imagePath
+            imagePath: imagePath,
+            created_at: new Date().toISOString()
         };
     
         console.log("Cow data prepared:", cowData);
@@ -83,18 +85,21 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
     };
 
     function getClassificationColor(classification: string | null) {
-        switch(classification) {
+        switch (classification) {
             case 'Beef 1-3':
+                return 'bg-[#dc2626]';
             case 'Beef 8-9':
-                return '#F44336';
+                return 'bg-[#dc262680]';
             case 'Beef 4':
+                return 'bg-[#ffce56]';
             case 'Beef 7':
-                return '#fff500';
+                return 'bg-[#36a2eb]';
             case 'Beef 5':
+                return 'bg-[#bbdd36]';
             case 'Beef 6':
-                return '#4CAF50';
+                return 'bg-[#5a822b]';
             default:
-                return '#9E9E9E';
+                return 'bg-[#808080]';
         }
     }
     
@@ -120,7 +125,7 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
                         <circle cx="100" cy="100" r="65" fill="white" />
                     </svg>
                     
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl">
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-xl">
                         {getBCSScore(classification)}
                     </div>
                     </div>

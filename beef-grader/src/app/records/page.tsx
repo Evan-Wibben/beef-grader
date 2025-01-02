@@ -25,16 +25,19 @@ const CowCard: React.FC<{
     function getClassificationColor(classification: string | null) {
         switch (classification) {
             case 'Beef 1-3':
+                return 'bg-[#dc2626]';
             case 'Beef 8-9':
-                return 'bg-red-500';
+                return 'bg-[#dc262680]';
             case 'Beef 4':
+                return 'bg-[#ffce56]';
             case 'Beef 7':
-                return 'bg-yellow-500';
+                return 'bg-[#36a2eb]';
             case 'Beef 5':
+                return 'bg-[#bbdd36]';
             case 'Beef 6':
-                return 'bg-green-500';
+                return 'bg-[#5a822b]';
             default:
-                return 'bg-gray-500';
+                return 'bg-[#808080]';
         }
     }
 
@@ -46,7 +49,7 @@ const CowCard: React.FC<{
         if (score === 'Beef 7') return '7';
         if (score === 'Beef 8-9') return '8-9';
         return score;
-      }
+    }
 
     return (
         <div className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col h-fit">
@@ -158,9 +161,7 @@ const RecordsPage: React.FC = () => {
         setSearchTerm(e.target.value);
     };
 
-    const filteredCows = searchTerm
-        ? cows.filter(cow => cow.breed.toLowerCase().includes(searchTerm.toLowerCase()))
-        : cows;
+    const filteredCows = searchTerm ? cows.filter(cow => cow.breed.toLowerCase().includes(searchTerm.toLowerCase())) : cows;
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -169,14 +170,16 @@ const RecordsPage: React.FC = () => {
         <div className='bg-brandLightGreen'>
             <div className="container mx-auto p-4">
                 <Hero title="Records" />
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        placeholder="Search by tag number..."
-                        value={searchTerm}
-                        onChange={handleSearch}
-                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandGreen"
-                    />
+                <div className="flex justify-center">
+                    <div className="mb-4 w-full max-w-96">
+                        <input
+                            type="text"
+                            placeholder="Search by tag number..."
+                            value={searchTerm}
+                            onChange={handleSearch}
+                            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandGreen"
+                        />
+                    </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {filteredCows.map((cow) => (

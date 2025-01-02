@@ -6,6 +6,7 @@ import Image from 'next/image';
 import withAuth from '../../components/withAuth';
 import Hero from '../../components/Hero';
 import PieChart from '../../components/PieChart';
+import LineChart from '../../components/LineChart';
 
 interface Cow {
     id: number;
@@ -14,6 +15,7 @@ interface Cow {
     notes: string;
     bcs_score: string;
     image_url: string | null;
+    created_at: string;
 }
 
 interface PastureData {
@@ -31,16 +33,19 @@ const CowCard: React.FC<{
     function getClassificationColor(classification: string | null) {
         switch (classification) {
             case 'Beef 1-3':
+                return 'bg-[#dc2626]';
             case 'Beef 8-9':
-                return 'bg-red-500';
+                return 'bg-[#dc262680]';
             case 'Beef 4':
+                return 'bg-[#ffce56]';
             case 'Beef 7':
-                return 'bg-yellow-500';
+                return 'bg-[#36a2eb]';
             case 'Beef 5':
+                return 'bg-[#bbdd36]';
             case 'Beef 6':
-                return 'bg-green-500';
+                return 'bg-[#5a822b]';
             default:
-                return 'bg-gray-500';
+                return 'bg-[#808080]';
         }
     }
 
@@ -177,17 +182,23 @@ const PasturePage: React.FC = () => {
                     title={pastureData.name}
                 />
 
-                <PieChart cows={pastureData.cows} />
-
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        placeholder="Search by tag number..."
-                        value={searchTerm}
-                        onChange={handleSearch}
-                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandGreen"
-                    />
+                <div className='md:flex justify-center gap-24 my-8'>
+                    <PieChart cows={pastureData.cows} />
+                    <LineChart cows={pastureData.cows} />
                 </div>
+                
+                <div className="flex justify-center">
+                    <div className="mb-4 w-full max-w-96">
+                        <input
+                            type="text"
+                            placeholder="Search by tag number..."
+                            value={searchTerm}
+                            onChange={handleSearch}
+                            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandGreen"
+                        />
+                    </div>
+                </div>
+                
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredCows.map((cow) => (

@@ -21,23 +21,23 @@ export async function POST(request: Request) {
         const data = await request.json();
         console.log('Received cow submission data:', data);
         
-        const { breed, age, pasture, notes, bcs_score, userId, pastureId, imagePath } = data;
+        const { breed, age, pasture, notes, bcs_score, userId, pastureId, imagePath, created_at } = data;
 
         // Validate required fields
-        if (!breed || !bcs_score || !userId) {
-            return new Response(JSON.stringify({ error: 'Breed, BCS score, and user ID are required.' }), { status: 400 });
+        if (!breed || !bcs_score || !userId || !created_at) {
+            return new Response(JSON.stringify({ error: 'Breed, BCS score, user ID, and creation timestamp are required.' }), { status: 400 });
         }
 
         // Additional validation
-        if (typeof breed !== 'string' || typeof bcs_score !== 'string' || typeof userId !== 'string') {
+        if (typeof breed !== 'string' || typeof bcs_score !== 'string' || typeof userId !== 'string' || typeof created_at !== 'string') {
             return new Response(JSON.stringify({ error: 'Invalid data types for required fields.' }), { status: 400 });
         }
 
         const client = await getPool().connect();
         try {
             const result = await client.query(
-                'INSERT INTO cows (breed, age, pasture, notes, bcs_score, user_id, pasture_id, image_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
-                [breed, age || null, pasture || null, notes || null, bcs_score, userId, pastureId || null, imagePath || null]
+                'INSERT INTO cows (breed, age, pasture, notes, bcs_score, user_id, pasture_id, image_url, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+                [breed, age || null, pasture || null, notes || null, bcs_score, userId, pastureId || null, imagePath || null, created_at]
             );
             
             console.log('Cow submitted successfully:', result.rows[0]);
@@ -48,8 +48,6 @@ export async function POST(request: Request) {
         }
     } catch (error) {
         console.error('Error submitting cow data:', error);
-        // Log the full error details
-        console.error(error instanceof Error ? error.stack : String(error));
-        return new Response(JSON.stringify({ error: 'Internal server error', details: error instanceof Error ? error.message : String(error) }), { status: 500 });
+        return new Response(JSON.stringify({ error: 'Internal server error' }), { status: 500 });
     }
 }
