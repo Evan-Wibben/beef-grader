@@ -127,7 +127,7 @@ const LineChart: React.FC<LineChartProps> = ({ cows }) => {
     return (
         <div className='pb-8'>
             <h2 className="text-center">Average BCS Progression</h2>
-            <div className='h-64 flex flex-col items-center'>
+            <div className='flex flex-col items-center'>
                 {chartData.datasets[0].data.length > 0 ? (
                     <Line data={chartData} options={options} />
                 ) : (
@@ -144,7 +144,7 @@ function getColorForBCS(score: number): string {
     if (score >= 5 && score <= 5.9) return 'rgba(75, 192, 192, 1)';
     if (score >= 6 && score <= 6.9) return 'rgba(90, 130, 43, 1)';
     if (score >= 7 && score <= 7.9) return 'rgba(54, 162, 235, 1)';
-    if (score >= 8 && score <= 9) return 'rgba(0, 128, 0, 1)';
+    if (score >= 8 && score <= 9) return 'rgba(220, 38, 38, .5)';
     return 'rgba(128, 128, 128, 1)';
 }
 

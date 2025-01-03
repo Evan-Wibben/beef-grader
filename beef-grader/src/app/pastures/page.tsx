@@ -34,7 +34,7 @@ const PasturesPage: React.FC = () => {
         <div className='bg-brandLightGreen'>
             <div className="container mx-auto p-4">
                 <Hero 
-                    title="My Pastures" 
+                    title="My Groups" 
                 />
                 <form onSubmit={handleAddPasture} className="mb-6 flex flex-col sm:flex-row items-center gap-4 bg-brandBrown p-4 rounded-lg">
                     <div className="relative w-full sm:w-auto flex-grow">
@@ -42,7 +42,7 @@ const PasturesPage: React.FC = () => {
                             type="text"
                             value={newPastureName}
                             onChange={(e) => setNewPastureName(e.target.value)}
-                            placeholder="Enter new pasture name"
+                            placeholder="Enter new group name"
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandGreen focus:border-transparent outline-none transition duration-200 ease-in-out"
                         />
                     </div>
@@ -50,7 +50,7 @@ const PasturesPage: React.FC = () => {
                         type="submit" 
                         className="w-full bg-white text-black px-4 py-2 rounded-lg border-2 border-white hover:bg-brandBrown hover:border-2 hover:border-white hover:text-white transition duration-300 ease-in-out font-bold text-center"
                     >
-                        Add Pasture
+                        Add Group
                     </button>
                 </form>
 
@@ -65,7 +65,7 @@ const PasturesPage: React.FC = () => {
                             <div className="flex justify-between items-center">
                                 <Link href={`/pastures/${pasture.id}`}>
                                     <button className="bg-brandGreen text-white py-2 px-4 rounded-lg border-brandGreen border-2 hover:bg-white hover:border-2 hover:border-brandGreen hover:text-black transition duration-300 ease-in-out text-center">
-                                        View Pasture
+                                        View Group
                                     </button>
                                 </Link>
                                 <button 

@@ -22,7 +22,7 @@ interface CowDetailsType {
 }
 
 const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, imagePath }) => {
-    const { pastures } = usePastureContext();
+    const { pastures, fetchPastures } = usePastureContext();
     const [breed, setBreed] = useState('');
     const [age, setAge] = useState<number | ''>('');
     const [pastureName, setPastureName] = useState('');
@@ -31,6 +31,10 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
     
     const formRef = useRef<HTMLFormElement>(null);
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        fetchPastures();
+    }, [fetchPastures]);
 
     useEffect(() => {
         if (!classification) {
@@ -65,7 +69,7 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
             notes: notes || null,
             bcs_score: classification,
             userId: '', 
-            pastureId: selectedPasture?.id, // Use optional chaining
+            pastureId: selectedPasture?.id,
             imagePath: imagePath,
             created_at: new Date().toISOString()
         };
@@ -87,19 +91,19 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
     function getClassificationColor(classification: string | null) {
         switch (classification) {
             case 'Beef 1-3':
-                return 'bg-[#dc2626]';
+                return '#dc2626';
             case 'Beef 8-9':
-                return 'bg-[#dc262680]';
+                return '#dc262680';
             case 'Beef 4':
-                return 'bg-[#ffce56]';
+                return '#ffce56';
             case 'Beef 7':
-                return 'bg-[#36a2eb]';
+                return '#36a2eb';
             case 'Beef 5':
-                return 'bg-[#bbdd36]';
+                return '#bbdd36';
             case 'Beef 6':
-                return 'bg-[#5a822b]';
+                return '#5a822b';
             default:
-                return 'bg-[#808080]';
+                return '#808080';
         }
     }
     
@@ -154,13 +158,13 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Pasture (Optional)</label>
+                <label className="block text-sm font-medium text-gray-700">Group (Optional)</label>
                 <select
                     value={pastureName}
                     onChange={(e) => setPastureName(e.target.value)}
                     className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                 >
-                    <option value="">Select a pasture</option>
+                    <option value="">Select a Group</option>
                     {pastures.map((pasture) => (
                         <option key={pasture.id} value={pasture.name}>{pasture.name}</option>
                     ))}
@@ -176,7 +180,6 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
                     rows={4}
                 />
             </div>
-
 
             <button 
                 type="submit"

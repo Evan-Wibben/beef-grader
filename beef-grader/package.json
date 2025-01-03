@@ -28,6 +28,8 @@
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
+    "react-easy-crop": "^5.2.0",
+    "react-image-crop": "^11.0.7",
     "sharp": "^0.33.5"
   },
   "devDependencies": {
@@ -41,6 +43,7 @@
     "@types/node": "^20.17.9",
     "@types/react": "^18.3.14",
     "@types/react-dom": "^18",
+    "@types/react-easy-crop": "^2.0.0",
     "@types/react-router-dom": "^5.3.3",
     "eslint": "^8",
     "eslint-config-next": "15.0.3",

@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Squash as Hamburger } from 'hamburger-react';
-import Cookies from 'js-cookie'; // Import js-cookie for cookie management
-import { useRouter } from 'next/navigation'; // Import useRouter for redirection
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 import BeefLogo from '/public/images/BeefLogo.png';
 import Image from 'next/image';
 import Buttons  from './Button';
@@ -14,8 +14,13 @@ const { SignOutButton } = Buttons;
 
 const Navigation: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const navItems = ['Pastures', 'Records', 'Create Entry'];
-    const router = useRouter(); // Initialize router
+    const navItems: Array<'Groups' | 'Records' | 'Create Entry'> = ['Groups', 'Records', 'Create Entry'];
+    const routeMapping = {
+        Groups: 'pastures',
+        Records: 'records',
+        'Create Entry': 'create-entry'
+    } as const;
+    const router = useRouter();
 
     const menuVariants = {
         closed: {
@@ -46,8 +51,8 @@ const Navigation: React.FC = () => {
     };
 
     const handleSignOut = () => {
-        Cookies.remove('userId'); // Remove the userId cookie
-        router.push('/login'); // Redirect to login page after signing out
+        Cookies.remove('userId');
+        router.push('/login');
     };
 
     return (
@@ -67,7 +72,7 @@ const Navigation: React.FC = () => {
                     <ul className="hidden md:flex space-x-6">
                         {navItems.map((item) => (
                             <li key={item} className="p-2 transition duration-300 relative group m-0">
-                                <Link href={`/${item.toLowerCase().replace(' ', '-')}`}
+                                <Link href={`/${routeMapping[item]}`}
                                       className="text-white text-lg font-medium relative py-1">
                                     {item}
                                     <span
@@ -77,7 +82,6 @@ const Navigation: React.FC = () => {
                                 </Link>
                             </li>
                         ))}
-                        {/* Add Sign Out Option */}
                         <li className="p-2 transition duration=300 relative group m= 00">
                             <SignOutButton href="/login" onClick={handleSignOut}>
                                 Sign Out
@@ -90,7 +94,6 @@ const Navigation: React.FC = () => {
                 </div>
             </div>
 
-            {/* Mobile menu */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div initial="closed" animate="open" exit="closed" variants={menuVariants}
@@ -98,14 +101,13 @@ const Navigation: React.FC = () => {
                         <motion.ul className="flex flex-col">
                             {navItems.map((item) => (
                                 <motion.li key={item} variants={itemVariants} className="border-t border-brandLightGreen/50">
-                                    <Link href={`/${item.toLowerCase().replace(' ', '-')}`}
+                                    <Link href={`/${routeMapping[item]}`}
                                           className="block text-xl hover:bg-white/10 transition py-1 text-center"
                                           onClick={() => setIsOpen(false)}>
                                         {item}
                                     </Link>
                                 </motion.li>
                             ))}
-                            {/* Mobile Sign Out */}
                             <motion.li variants={itemVariants} className="border-t border-brandLightGreen/50 py-4 flex">
                                 <SignOutButton href="/login" onClick={handleSignOut}>
                                     Sign Out

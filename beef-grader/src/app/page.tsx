@@ -11,7 +11,7 @@ const Home: React.FC = () => {
     return (
         <div className="bg-brandLightGreen pt-4 px-4">
             <Hero 
-                title="Grading Beef" 
+                title="Body Condition Score" 
                 imageSrc={CowsGrazing} 
                 imageAlt="Cattle grazing in a field"
             />
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
                             link="/pastures"
                         />
                         <Card
-                            title="Records"
+                            title="All Herd Records"
                             description="Keep detailed records of your cattle and their performance."
                             link="/records"
                         />

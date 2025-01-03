@@ -169,7 +169,7 @@ const RecordsPage: React.FC = () => {
     return (
         <div className='bg-brandLightGreen'>
             <div className="container mx-auto p-4">
-                <Hero title="Records" />
+                <Hero title="All Herd Records" />
                 <div className="flex justify-center">
                     <div className="mb-4 w-full max-w-96">
                         <input
