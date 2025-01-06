@@ -16,7 +16,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
         const pasture = pastureResult.rows[0];
 
-        const cowsResult = await pool.query('SELECT id, breed, age, notes, bcs_score, image_url FROM cows WHERE pasture_id = $1', [id]);
+        // Include created_at in the cow data retrieval
+        const cowsResult = await pool.query('SELECT id, breed, age, notes, bcs_score, image_url, created_at FROM cows WHERE pasture_id = $1', [id]);
 
         const response = {
             ...pasture,

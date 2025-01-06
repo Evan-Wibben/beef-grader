@@ -25,17 +25,30 @@ const CowCard: React.FC<{
     function getClassificationColor(classification: string | null) {
         switch (classification) {
             case 'Beef 1-3':
+                return 'bg-[#dc2626]';
             case 'Beef 8-9':
-                return 'bg-red-500';
+                return 'bg-[#dc262680]';
             case 'Beef 4':
+                return 'bg-[#ffce56]';
             case 'Beef 7':
-                return 'bg-yellow-500';
+                return 'bg-[#36a2eb]';
             case 'Beef 5':
+                return 'bg-[#bbdd36]';
             case 'Beef 6':
-                return 'bg-green-500';
+                return 'bg-[#5a822b]';
             default:
-                return 'bg-gray-500';
+                return 'bg-[#808080]';
         }
+    }
+
+    const getBCSScore = (score: string) => {
+        if (score === 'Beef 1-3') return '1-3';
+        if (score === 'Beef 4') return '4';
+        if (score === 'Beef 5') return '5';
+        if (score === 'Beef 6') return '6';
+        if (score === 'Beef 7') return '7';
+        if (score === 'Beef 8-9') return '8-9';
+        return score;
     }
 
     return (
@@ -45,13 +58,13 @@ const CowCard: React.FC<{
                     <h3 className="text-lg font-medium text-gray-900">Tag #: {cow.breed}</h3>
                     <div className="flex items-center">
                         <span className={`w-3 h-3 rounded-full ${getClassificationColor(cow.bcs_score)}`} />
-                        <p className="text-sm text-gray-600 ml-2">BCS Score: {cow.bcs_score}</p>
+                        <p className="text-md font-bold ml-2">BCS Score: {getBCSScore(cow.bcs_score)}</p>
                     </div>
                 </div>
                 <div className="mt-4 flex justify-end space-x-2">
                     <button 
                         onClick={() => onExpand(cow.id)}
-                        className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                        className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brandGreen hover:bg-[#456422]"
                     >
                         {isExpanded ? 'Hide Details' : 'Show Details'}
                     </button>
@@ -148,9 +161,7 @@ const RecordsPage: React.FC = () => {
         setSearchTerm(e.target.value);
     };
 
-    const filteredCows = searchTerm
-        ? cows.filter(cow => cow.breed.toLowerCase().includes(searchTerm.toLowerCase()))
-        : cows;
+    const filteredCows = searchTerm ? cows.filter(cow => cow.breed.toLowerCase().includes(searchTerm.toLowerCase())) : cows;
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -158,15 +169,17 @@ const RecordsPage: React.FC = () => {
     return (
         <div className='bg-brandLightGreen'>
             <div className="container mx-auto p-4">
-                <Hero title="Records" />
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        placeholder="Search by tag number..."
-                        value={searchTerm}
-                        onChange={handleSearch}
-                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandGreen"
-                    />
+                <Hero title="All Herd Records" />
+                <div className="flex justify-center">
+                    <div className="mb-4 w-full max-w-96">
+                        <input
+                            type="text"
+                            placeholder="Search by tag number..."
+                            value={searchTerm}
+                            onChange={handleSearch}
+                            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandGreen"
+                        />
+                    </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {filteredCows.map((cow) => (

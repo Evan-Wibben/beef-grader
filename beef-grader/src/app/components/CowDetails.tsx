@@ -18,10 +18,11 @@ interface CowDetailsType {
     userId: string;
     pastureId?: number; 
     imagePath: string | null;
+    created_at: string;
 }
 
 const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, imagePath }) => {
-    const { pastures } = usePastureContext();
+    const { pastures, fetchPastures } = usePastureContext();
     const [breed, setBreed] = useState('');
     const [age, setAge] = useState<number | ''>('');
     const [pastureName, setPastureName] = useState('');
@@ -30,6 +31,10 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
     
     const formRef = useRef<HTMLFormElement>(null);
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        fetchPastures();
+    }, []);
 
     useEffect(() => {
         if (!classification) {
@@ -64,8 +69,9 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
             notes: notes || null,
             bcs_score: classification,
             userId: '', 
-            pastureId: selectedPasture?.id, // Use optional chaining
-            imagePath: imagePath
+            pastureId: selectedPasture?.id,
+            imagePath: imagePath,
+            created_at: new Date().toISOString()
         };
     
         console.log("Cow data prepared:", cowData);
@@ -83,39 +89,52 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
     };
 
     function getClassificationColor(classification: string | null) {
-        switch(classification) {
+        switch (classification) {
             case 'Beef 1-3':
+                return '#dc2626';
             case 'Beef 8-9':
-                return 'bg-red-500';
+                return '#dc262680';
             case 'Beef 4':
+                return '#ffce56';
             case 'Beef 7':
-                return 'bg-yellow-500';
+                return '#36a2eb';
             case 'Beef 5':
+                return '#bbdd36';
             case 'Beef 6':
-                return 'bg-green-500';
+                return '#5a822b';
             default:
-                return 'bg-gray-500';
+                return '#808080';
         }
     }
-
+    
+    const getBCSScore = (classification: string | null) => {
+        if (classification === 'Beef 1-3') return '1-3';
+        if (classification === 'Beef 4') return '4';
+        if (classification === 'Beef 5') return '5';
+        if (classification === 'Beef 6') return '6';
+        if (classification === 'Beef 7') return '7';
+        if (classification === 'Beef 8-9') return '8-9';
+        return classification || '';
+    }
+    
     return (
         <form onSubmit={handleSubmit} className="space-y-4 block-container" ref={formRef}>
             {errorMessage && <div className="text-red-500">{errorMessage}</div>}
             
             {classification && (
-                <div className="flex items-center justify-center my-4">
-                    <div className={`relative w-32 h-32 flex items-center justify-center rounded-full 
-                        ${getClassificationColor(classification)}
-                    `}>
-                        <input
-                            type="text"
-                            value={classification}
-                            readOnly
-                            className="text-lg font-bold text-center bg-white rounded-full w-24 h-24 border-none focus:outline-none"
-                        />
+            <div className="flex items-center justify-center my-4">
+                <div className="relative w-32 h-32">
+                    <svg width="100%" height="100%" viewBox="0 0 200 200">
+                        <circle cx="100" cy="100" r="80" fill="none" stroke={getClassificationColor(classification)} strokeWidth="25" strokeLinecap="round" />
+                        <circle cx="100" cy="100" r="65" fill="white" />
+                    </svg>
+                    
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-xl">
+                        {getBCSScore(classification)}
                     </div>
-                </div>
-            )}
+                    </div>
+            </div>
+        )}
 
             <div>
                 <label className="block text-sm font-medium text-gray-700">Tag Number</label>
@@ -139,13 +158,13 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Pasture (Optional)</label>
+                <label className="block text-sm font-medium text-gray-700">Group (Optional)</label>
                 <select
                     value={pastureName}
                     onChange={(e) => setPastureName(e.target.value)}
                     className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                 >
-                    <option value="">Select a pasture</option>
+                    <option value="">Select a Group</option>
                     {pastures.map((pasture) => (
                         <option key={pasture.id} value={pasture.name}>{pasture.name}</option>
                     ))}
@@ -161,7 +180,6 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
                     rows={4}
                 />
             </div>
-
 
             <button 
                 type="submit"
