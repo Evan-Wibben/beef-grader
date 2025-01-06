@@ -4,8 +4,11 @@ import React from 'react';
 import Image from 'next/image';
 import Hero from '../../components/Hero';
 import PieChart from '../../components/PieChart';
+<<<<<<< HEAD
 import pool from '../../../lib/db'; // Adjust the path as needed
+=======
 import LineChart from '../../components/LineChart';
+>>>>>>> main
 
 interface Cow {
     id: number;
@@ -63,6 +66,21 @@ const CowCard: React.FC<{ cow: Cow }> = ({ cow }) => {
                         <p className="text-md font-bold ml-2">BCS Score: {getBCSScore(cow.bcs_score)}</p>
                     </div>
                 </div>
+<<<<<<< HEAD
+                {cow.image_url && (
+                    <div className="w-full h-64 relative mt-2">
+                        <Image
+                            src={cow.image_url}
+                            alt={`Cow tag ${cow.breed}`}
+                            fill
+                            style={{ objectFit: 'contain' }}
+                        />
+                    </div>
+                )}
+                <div className='bg-brandLightGreen rounded-lg p-2 mt-2'>
+                    <p className="text-sm text-brandGray">Age: {cow.age}</p>
+                    <p className="text-sm text-brandGray">Notes: {cow.notes}</p>
+=======
                 <div className="mt-4 flex justify-end space-x-2">
                     <button 
                         onClick={() => onExpand(cow.id)}
@@ -76,30 +94,18 @@ const CowCard: React.FC<{ cow: Cow }> = ({ cow }) => {
                     >
                         Remove from Pasture
                     </button>
+>>>>>>> main
                 </div>
             </div>
-            {isExpanded && (
-                <div className="p-4 border-t border-gray-200">
-                    {cow.image_url && (
-                        <div className="w-full h-64 relative mb-2">
-                            <Image
-                                src={cow.image_url}
-                                alt={`Cow tag ${cow.breed}`}
-                                fill
-                                style={{ objectFit: 'contain' }}
-                            />
-                        </div>
-                    )}
-                    <div className='bg-brandLightGreen rounded-lg p-2'>
-                        <p className="text-sm text-brandGray">Age: {cow.age}</p>
-                        <p className="text-sm text-brandGray">Notes: {cow.notes}</p>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
 
+<<<<<<< HEAD
+interface PasturePageProps {
+    params: Promise<{ id: string }>;
+  }
+=======
 const PasturePage: React.FC = () => {
     const params = useParams();
     const id = params.id as string;
@@ -107,25 +113,21 @@ const PasturePage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [expandedCowId, setExpandedCowId] = useState<number | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
-
-    useEffect(() => {
-        const fetchPastureData = async () => {
-            try {
-                const response = await fetch(`/api/pastures/${id}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch pasture');
-                }
-                const data = await response.json();
-                setPastureData(data);
-            } catch (err) {
-                console.error(err);
-                setError('Could not load pasture details.');
-            }
-        };
+>>>>>>> main
 
   export default async function PasturePage({ params }: PasturePageProps) {
     const { id } = await params;
     const pastureData = await getPastureData(id);
+
+<<<<<<< HEAD
+    if (!pastureData) {
+        return <p>Pasture not found</p>;
+    }
+=======
+        if (id) {
+            fetchPastureData();
+        }
+    }, [id]);
 
     const handleDeleteCow = async (cowId: number) => {
         if (confirm('Are you sure you want to remove this cow from the pasture?')) {
@@ -167,10 +169,19 @@ const PasturePage: React.FC = () => {
 
     if (error) return <p className="text-red-500">{error}</p>;
     if (!pastureData) return <p>Loading...</p>;
+>>>>>>> main
 
     return (
         <div className="bg-brandLightGreen">
             <div className="container mx-auto p-4">
+<<<<<<< HEAD
+                <Hero title={pastureData.name} />
+                <PieChart cows={pastureData.cows} />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {pastureData.cows.map((cow) => (
+                        <CowCard key={cow.id} cow={cow} />
+                    ))}
+=======
                 <Hero 
                     title={pastureData.name}
                 />
@@ -203,6 +214,7 @@ const PasturePage: React.FC = () => {
                         onExpand={handleExpand}
                     />
                 ))}
+>>>>>>> main
                 </div>
             </div>
         </div>
