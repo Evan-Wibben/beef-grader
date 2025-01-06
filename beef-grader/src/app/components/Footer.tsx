@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
     const routeMapping = {
         Groups: 'pastures',
         Records: 'records',
-        'Submit Cow': 'submit-cow'
+        'Create Entry': 'create-entry'
     };
 
     const navItems = Object.keys(routeMapping) as Array<keyof typeof routeMapping>;

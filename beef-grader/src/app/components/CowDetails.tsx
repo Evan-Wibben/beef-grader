@@ -34,7 +34,7 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
 
     useEffect(() => {
         fetchPastures();
-    }, [fetchPastures]);
+    }, []);
 
     useEffect(() => {
         if (!classification) {
