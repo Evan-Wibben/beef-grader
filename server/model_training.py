@@ -57,7 +57,7 @@ else:
     print("Training accuracy not found in history")
 
 # Save the model
-model.save('server/beef_classification_model.keras')
+model.save('server/beef_classification_model_V2.keras')
 
 # Save class names
 with open('server.class_names.json', 'w') as f:

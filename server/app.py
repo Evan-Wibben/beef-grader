@@ -14,7 +14,7 @@ def after_request(response):
     return response
 
 # Load the model
-model = tf.keras.models.load_model('beef_classification_model.keras')
+model = tf.keras.models.load_model('beef_classification_model_V2.keras')
 
 # Load class names
 with open('class_names.json', 'r') as f:
