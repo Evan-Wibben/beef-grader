@@ -1,9 +1,8 @@
-'use client';
-
 import React, { useState, useCallback } from 'react';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import ReactCrop, { Crop, PercentCrop, PixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
+import imageCompression from 'browser-image-compression';
 
 interface CameraComponentProps {
     setClassification: (classification: string | null) => void;
@@ -41,9 +40,6 @@ const CameraComponent: React.FC<CameraComponentProps> = ({ setClassification, se
     const getCroppedImage = useCallback(async () => {
         if (!image) return;
 
-        const canvas = document.createElement('canvas');
-        const scaleX = 1;
-        const scaleY = 1;
         const img = new Image();
         img.src = `data:image/jpeg;base64,${image}`;
 
@@ -51,26 +47,61 @@ const CameraComponent: React.FC<CameraComponentProps> = ({ setClassification, se
             img.onload = resolve;
         });
 
-        canvas.width = crop.width;
-        canvas.height = crop.height;
+        // Convert percentage to actual pixel values
+        const pixelCrop = {
+            x: (crop.x * img.width) / 100,
+            y: (crop.y * img.height) / 100,
+            width: (crop.width * img.width) / 100,
+            height: (crop.height * img.height) / 100
+        };
+
+        const canvas = document.createElement('canvas');
+        canvas.width = pixelCrop.width;
+        canvas.height = pixelCrop.height;
         const ctx = canvas.getContext('2d');
 
         if (ctx) {
             ctx.drawImage(
                 img,
-                crop.x * scaleX,
-                crop.y * scaleY,
-                crop.width * scaleX,
-                crop.height * scaleY,
+                pixelCrop.x,
+                pixelCrop.y,
+                pixelCrop.width,
+                pixelCrop.height,
                 0,
                 0,
-                crop.width,
-                crop.height
+                pixelCrop.width,
+                pixelCrop.height
             );
         }
 
-        const croppedImageBase64 = canvas.toDataURL('image/jpeg').split(',')[1];
-        await sendImageToBackend(croppedImageBase64);
+        // Convert canvas to Blob
+        const blob = await new Promise<Blob>((resolve, reject) => {
+            canvas.toBlob((result) => {
+                if (result) {
+                    resolve(result);
+                } else {
+                    reject(new Error('Failed to create blob'));
+                }
+            }, 'image/jpeg');
+        });
+        
+
+        // Compress the image
+        const file = new File([blob], 'image.jpg', { type: blob.type });
+        const compressedFile = await imageCompression(file, {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 1920,
+            useWebWorker: true
+        });
+
+        // Convert compressed file to base64
+        const reader = new FileReader();
+        reader.readAsDataURL(compressedFile);
+        reader.onloadend = async () => {
+            const base64data = reader.result as string;
+            const optimizedImageBase64 = base64data.split(',')[1];
+            await sendImageToBackend(optimizedImageBase64);
+        };
     }, [crop, image]);
 
     const sendImageToBackend = async (imageBase64: string) => {

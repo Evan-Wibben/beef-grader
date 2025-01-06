@@ -79,14 +79,16 @@ const CowCard: React.FC<{
             {isExpanded && (
                 <div className="p-4 border-t border-gray-200">
                     {cow.image_url && (
-                        <div className="w-full h-64 relative mb-2">
+                        <div className="relative w-full h-auto">
                             <Image
                                 src={cow.image_url}
                                 alt={`Cow tag ${cow.breed}`}
-                                fill
-                                style={{ objectFit: 'contain' }}
+                                width={500}  // Set an appropriate width
+                                height={300} // Set an appropriate height
+                                style={{ objectFit: 'contain', width: '100%', height: 'auto' }}
                             />
                         </div>
+                    
                     )}
                     <div className='bg-brandLightGreen rounded-lg p-2'>
                         <p className="text-sm text-brandGray">Age: {cow.age}</p>

@@ -15,6 +15,7 @@
     "@vercel/postgres": "^0.10.0",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
+    "browser-image-compression": "^2.0.2",
     "chart.js": "^4.4.7",
     "chartjs-adapter-date-fns": "^3.0.0",
     "date-fns": "^4.1.0",
