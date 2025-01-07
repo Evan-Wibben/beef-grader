@@ -10,10 +10,13 @@ export default {
     extend: {
       "colors": {
         // custom color pallet generated here: https://www.tints.dev/brand/4DD3FF
-        "brandGreen": "#5a822b",
-        "brandBrown": "#797370",
-        "brandGray": "#566268",
-        "brandLightGreen": "#f7f8f3",
+        "brandTeel": "#0F505C",
+        "brandDarkTeel": "#00444D",
+        "brandLimeGreen": "#78C71C",
+        "brandGray": "#707070",
+      },
+      boxShadow: {
+        '3xl': '0 1px 25px -15px rgba(0, 0, 0, 1)',
       }
     },
   },

@@ -186,7 +186,7 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
                 className={`px-4 py-2 rounded-lg shadow-md transition duration-300 ${
                     isLoading || !classification || !breed
                         ? 'bg-brandGray text-white'
-                        : 'bg-brandGreen text-white hover:bg-brandBrown'
+                        : 'bg-brandDarkTeel text-white hover:bg-brandBrown'
                 }`}
                 disabled={isLoading || !classification || !breed}
             >

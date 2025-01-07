@@ -22,7 +22,7 @@ body {
 
 @layer components {
   .block-container {
-    @apply container mx-auto sm:px-0;
+    @apply container mx-auto sm:px-0 max-md:px-4;
   }
   .expand {
     @apply w-full h-full;

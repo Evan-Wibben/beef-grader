@@ -14,20 +14,20 @@ const Footer: React.FC = () => {
     const navItems = Object.keys(routeMapping) as Array<keyof typeof routeMapping>;
 
     return (
-        <footer className="bg-brandGray text-white py-8">
+        <footer className="bg-brandTeel text-white py-8">
             <div className="block-container">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
-                    <div>
+                    {/* <div>
                         <Image
                             alt="Logo for Beef Grader"
                             src={BeefLogo}
                             className="h-16 w-auto"
                             priority
                         />
-                    </div>
+                    </div> */}
                     <div>
-                        <h2 className="text-xl font-bold mb-4">- Quick Links -</h2>
-                        <ul className="space-y-2 text-center">
+                        <h2 className="text-xl font-bold mb-4">Quick Links</h2>
+                        <ul className="space-y-6 text-center">
                             {navItems.map((item) => (
                                 <li key={item}>
                                     <Link
@@ -42,7 +42,7 @@ const Footer: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="mt-8 border-white text-center text-sm italic">
+                <div className="my-8 border-white text-brandLimeGreen text-center text-sm italic">
                     &copy; {new Date().getFullYear()} Paulsen
                 </div>
             </div>

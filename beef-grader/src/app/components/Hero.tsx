@@ -8,8 +8,8 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ title, imageSrc, imageAlt }) => (
-    <div className="block-container pb-4">
-        <div className="relative h-[10vh] md:h-[12vh] bg-brandGreen text-white overflow-hidden rounded-xl">
+    <div className="pb-8">
+        <div className="relative h-[15vh] md:h-[30vh] bg-brandGreen text-white overflow-hidden shadow-xl">
             {imageSrc && (
                 <Image
                     src={imageSrc}
@@ -20,11 +20,14 @@ const Hero: React.FC<HeroProps> = ({ title, imageSrc, imageAlt }) => (
                     priority
                 />
             )}
-            <div className="absolute inset-0 bg-brandGreen/30 to-transparent"></div>
-            <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-4">
-                <h1 className="text-4xl md:text-6xl font-bold drop-shadow-lg">{title}</h1>
+            <div className="absolute inset-0 to-transparent"></div>
+        </div>
+        <div className="block-container">
+            <div className="relative bg-brandTeel text-white z-10 -mt-6 md:-mt-10 flex flex-col justify-center items-center text-center px-4 py-4 rounded-2xl">
+                <h1 className="text-4xl md:text-6xl font-bold">{title}</h1>
             </div>
         </div>
+        
     </div>
 );
 

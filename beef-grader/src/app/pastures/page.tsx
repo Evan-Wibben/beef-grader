@@ -36,19 +36,19 @@ const PasturesPage: React.FC = () => {
                 <Hero 
                     title="My Groups" 
                 />
-                <form onSubmit={handleAddPasture} className="mb-6 flex flex-col sm:flex-row items-center gap-4 bg-brandBrown p-4 rounded-lg">
+                <form onSubmit={handleAddPasture} className="mb-6 flex flex-col sm:flex-row items-center gap-4 bg-brandDarkTeel p-4 rounded-lg">
                     <div className="relative w-full sm:w-auto flex-grow">
                         <input
                             type="text"
                             value={newPastureName}
                             onChange={(e) => setNewPastureName(e.target.value)}
                             placeholder="Enter new group name"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandGreen focus:border-transparent outline-none transition duration-200 ease-in-out"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brandDarkTeel focus:border-transparent outline-none transition duration-200 ease-in-out"
                         />
                     </div>
                     <button 
                         type="submit" 
-                        className="w-full bg-white text-black px-4 py-2 rounded-lg border-2 border-white hover:bg-brandBrown hover:border-2 hover:border-white hover:text-white transition duration-300 ease-in-out font-bold text-center"
+                        className="w-full bg-white text-black px-4 py-2 rounded-lg border-2 border-white hover:bg-brandDarkTeel hover:border-2 hover:border-white hover:text-white transition duration-300 ease-in-out font-bold text-center"
                     >
                         Add Group
                     </button>
@@ -64,7 +64,7 @@ const PasturesPage: React.FC = () => {
                             </div>
                             <div className="flex justify-between items-center">
                                 <Link href={`/pastures/${pasture.id}`}>
-                                    <button className="bg-brandGreen text-white py-2 px-4 rounded-lg border-brandGreen border-2 hover:bg-white hover:border-2 hover:border-brandGreen hover:text-black transition duration-300 ease-in-out text-center">
+                                    <button className="bg-brandDarkTeel text-white py-2 px-4 rounded-lg border-brandDarkTeel border-2 hover:bg-white hover:border-2 hover:border-brandDarkTeel hover:text-black transition duration-300 ease-in-out text-center">
                                         View Group
                                     </button>
                                 </Link>

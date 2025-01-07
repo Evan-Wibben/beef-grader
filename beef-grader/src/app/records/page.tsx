@@ -64,7 +64,7 @@ const CowCard: React.FC<{
                 <div className="mt-4 flex justify-end space-x-2">
                     <button 
                         onClick={() => onExpand(cow.id)}
-                        className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brandGreen hover:bg-[#456422]"
+                        className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brandDarkTeel hover:bg-brandLimeGreen"
                     >
                         {isExpanded ? 'Hide Details' : 'Show Details'}
                     </button>
@@ -90,7 +90,7 @@ const CowCard: React.FC<{
                         </div>
                     
                     )}
-                    <div className='bg-brandLightGreen rounded-lg p-2'>
+                    <div className='bg-brandLimeGreen rounded-lg p-2'>
                         <p className="text-sm text-brandGray">Age: {cow.age}</p>
                         <p className="text-sm text-brandGray">Pasture: {cow.pasture || 'No Pasture'}</p>
                         <p className="text-sm text-brandGray">Notes: {cow.notes}</p>
@@ -179,7 +179,7 @@ const RecordsPage: React.FC = () => {
                             placeholder="Search by tag number..."
                             value={searchTerm}
                             onChange={handleSearch}
-                            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandGreen"
+                            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brandDarkTeel"
                         />
                     </div>
                 </div>
