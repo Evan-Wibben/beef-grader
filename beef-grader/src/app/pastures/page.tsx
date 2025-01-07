@@ -35,6 +35,8 @@ const PasturesPage: React.FC = () => {
             <div className="container mx-auto p-4">
                 <Hero 
                     title="My Groups" 
+                    imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Home_Hero.jpg"
+                    imageAlt="Cattle grazing in a field"
                 />
                 <form onSubmit={handleAddPasture} className="mb-6 flex flex-col sm:flex-row items-center gap-4 bg-brandDarkTeel p-4 rounded-lg">
                     <div className="relative w-full sm:w-auto flex-grow">

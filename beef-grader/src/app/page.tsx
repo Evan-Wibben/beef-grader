@@ -4,15 +4,13 @@ import React from 'react';
 import Hero from './components/Hero';
 import Card from './components/Card';
 import withAuth from './components/withAuth';
-import CowsGrazing from '/public/images/CowsGrazing.webp';
-
 
 const Home: React.FC = () => {
     return (
         <div className="">
             <Hero 
                 title="BCS" 
-                imageSrc={CowsGrazing} 
+                imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Home_Hero.webp"
                 imageAlt="Cattle grazing in a field"
             />
             <div className="bg-brandLightGreen pb-6">

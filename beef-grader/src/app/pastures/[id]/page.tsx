@@ -176,12 +176,13 @@ const PasturePage: React.FC = () => {
     if (!pastureData) return <p>Loading...</p>;
 
     return (
-        <div className="bg-brandLightGreen">
-            <div className="container mx-auto p-4">
-                <Hero 
-                    title={pastureData.name}
-                />
-
+        <div>
+            <Hero 
+                title={pastureData.name}
+                imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Pasture_Individual.webp"
+                imageAlt="Cattle in a pasture."
+            />
+            <div className="block-container">
                 <div className='md:flex justify-center gap-24 my-8'>
                     <PieChart cows={pastureData.cows} />
                     <LineChart cows={pastureData.cows} />
@@ -201,17 +202,19 @@ const PasturePage: React.FC = () => {
                 
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredCows.map((cow) => (
-                    <CowCard 
-                        key={cow.id} 
-                        cow={cow} 
-                        onDeleteCow={handleDeleteCow}
-                        isExpanded={expandedCowId === cow.id}
-                        onExpand={handleExpand}
-                    />
-                ))}
+                    {filteredCows.map((cow) => (
+                        <CowCard 
+                            key={cow.id} 
+                            cow={cow} 
+                            onDeleteCow={handleDeleteCow}
+                            isExpanded={expandedCowId === cow.id}
+                            onExpand={handleExpand}
+                        />
+                    ))}
                 </div>
             </div>
+
+                
         </div>
     );
 };

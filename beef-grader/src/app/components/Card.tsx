@@ -18,7 +18,7 @@ const Card: React.FC<CardProps> = ({ title, description, link, svg }) => (
       </div>
       <div>
         <div className="flex items-center mb-6">
-          <h3 className="text-2xl font-bold text-brandGray">{title}</h3>
+          <h3 className="text-2xl text-brandGray">{title}</h3>
         </div>
         <p className="text-brandGray leading-relaxed">{description}</p>
         <div className="mt-6 flex">

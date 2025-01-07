@@ -8,14 +8,14 @@ interface CardButtonProps {
 }
 
 interface SignOutButtonProps {
-  href: string; // Add href here
+  href: string;
   onClick: () => void;
   children: React.ReactNode;
   className?: string;
 }
 
 const CardButton: React.FC<CardButtonProps> = ({ href, children, className = '' }) => {
-  const baseStyle = 'bg-brandDarkTeel text-white px-8 py-2 rounded-md font-semibold cursor-pointer';
+  const baseStyle = 'bg-brandDarkTeel text-white px-8 py-2 rounded-md font-semibold cursor-pointer border-2 border-brandDarkTeel hover:bg-transparent hover:border-2 hover:text-brandDarkTeel';
   const buttonStyle = `${baseStyle} ${className}`;
 
   return (

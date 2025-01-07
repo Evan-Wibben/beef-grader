@@ -64,6 +64,8 @@ const CowForm: React.FC = () => {
             <div className="p-6">
                 <Hero 
                     title="Create Record" 
+                    imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Home_Hero.jpg"
+                    imageAlt="Cattle grazing in a field"
                 />
                 <CameraComponent 
                     setClassification={setClassification}

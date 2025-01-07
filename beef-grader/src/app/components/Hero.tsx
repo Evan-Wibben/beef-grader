@@ -9,7 +9,7 @@ interface HeroProps {
 
 const Hero: React.FC<HeroProps> = ({ title, imageSrc, imageAlt }) => (
     <div className="pb-8">
-        <div className="relative h-[15vh] md:h-[30vh] bg-brandGreen text-white overflow-hidden shadow-xl">
+        <div className="relative h-[18rem] md:h-[35rem] bg-brandGreen text-white overflow-hidden shadow-xl">
             {imageSrc && (
                 <Image
                     src={imageSrc}
@@ -24,7 +24,7 @@ const Hero: React.FC<HeroProps> = ({ title, imageSrc, imageAlt }) => (
         </div>
         <div className="block-container">
             <div className="relative bg-brandTeel text-white z-10 -mt-6 md:-mt-10 flex flex-col justify-center items-center text-center px-4 py-4 rounded-2xl">
-                <h1 className="text-4xl md:text-6xl font-bold">{title}</h1>
+                <h1 className="text-4xl md:text-6xl">{title}</h1>
             </div>
         </div>
         

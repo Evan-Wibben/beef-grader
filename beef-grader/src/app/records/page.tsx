@@ -171,7 +171,11 @@ const RecordsPage: React.FC = () => {
     return (
         <div className='bg-brandLightGreen'>
             <div className="container mx-auto p-4">
-                <Hero title="All Herd Records" />
+                <Hero 
+                    title="All Herd Records" 
+                    imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Home_Hero.jpg"
+                    imageAlt="Cattle grazing in a field"
+                />
                 <div className="flex justify-center">
                     <div className="mb-4 w-full max-w-96">
                         <input

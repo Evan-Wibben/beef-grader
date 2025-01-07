@@ -16,18 +16,10 @@ const Footer: React.FC = () => {
     return (
         <footer className="bg-brandTeel text-white py-8">
             <div className="block-container">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
-                    {/* <div>
-                        <Image
-                            alt="Logo for Beef Grader"
-                            src={BeefLogo}
-                            className="h-16 w-auto"
-                            priority
-                        />
-                    </div> */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
                     <div>
                         <h2 className="text-xl font-bold mb-4">Quick Links</h2>
-                        <ul className="space-y-6 text-center">
+                        <ul className="space-y-4 text-center">
                             {navItems.map((item) => (
                                 <li key={item}>
                                     <Link
