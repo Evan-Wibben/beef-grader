@@ -15,7 +15,7 @@ const Home: React.FC = () => {
             />
             <div className="bg-brandLightGreen pb-6">
                 <div className="block-container">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <Card
                             title="Pastures"
                             description="Manage and analyze your pastures for optimal cattle grazing."

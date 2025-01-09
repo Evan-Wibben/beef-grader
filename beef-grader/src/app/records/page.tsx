@@ -64,13 +64,13 @@ const CowCard: React.FC<{
                 <div className="mt-4 flex justify-end space-x-2">
                     <button 
                         onClick={() => onExpand(cow.id)}
-                        className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brandDarkTeel hover:bg-brandLimeGreen"
+                        className="teel-button"
                     >
                         {isExpanded ? 'Hide Details' : 'Show Details'}
                     </button>
                     <button 
                         onClick={() => handleDelete(cow.id)}
-                        className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
+                        className="red-button"
                     >
                         Delete
                     </button>
@@ -83,14 +83,14 @@ const CowCard: React.FC<{
                             <Image
                                 src={cow.image_url}
                                 alt={`Cow tag ${cow.breed}`}
-                                width={500}  // Set an appropriate width
-                                height={300} // Set an appropriate height
+                                width={500}
+                                height={300}
                                 style={{ objectFit: 'contain', width: '100%', height: 'auto' }}
                             />
                         </div>
                     
                     )}
-                    <div className='bg-brandLimeGreen rounded-lg p-2'>
+                    <div className='bg-gray-100 rounded-lg p-2'>
                         <p className="text-sm text-brandGray">Age: {cow.age}</p>
                         <p className="text-sm text-brandGray">Pasture: {cow.pasture || 'No Pasture'}</p>
                         <p className="text-sm text-brandGray">Notes: {cow.notes}</p>
@@ -173,7 +173,7 @@ const RecordsPage: React.FC = () => {
             <div className="container mx-auto p-4">
                 <Hero 
                     title="All Herd Records" 
-                    imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Home_Hero.jpg"
+                    imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Pasture_Individual.webp"
                     imageAlt="Cattle grazing in a field"
                 />
                 <div className="flex justify-center">

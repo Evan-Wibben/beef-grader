@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
     return (
         <footer className="bg-brandTeel text-white py-8">
             <div className="block-container">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
+                <div className="grid grid-cols-1 gap-6 justify-items-center">
                     <div>
                         <h2 className="text-xl font-bold mb-4">Quick Links</h2>
                         <ul className="space-y-4 text-center">

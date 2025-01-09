@@ -129,7 +129,7 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
                         <circle cx="100" cy="100" r="65" fill="white" />
                     </svg>
                     
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-xl">
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl">
                         {getBCSScore(classification)}
                     </div>
                     </div>
@@ -183,10 +183,10 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
 
             <button 
                 type="submit"
-                className={`px-4 py-2 rounded-lg shadow-md transition duration-300 ${
+                className={`px-4 py-2 rounded-lg shadow-md transition duration-300 border-2 border-brandGray ${
                     isLoading || !classification || !breed
                         ? 'bg-brandGray text-white'
-                        : 'bg-brandDarkTeel text-white hover:bg-brandBrown'
+                        : 'bg-brandDarkTeel text-white hover:bg-transparent hover:text-brandDarkTeel !border-brandDarkTeel'
                 }`}
                 disabled={isLoading || !classification || !breed}
             >

@@ -141,8 +141,8 @@ const CameraComponent: React.FC<CameraComponentProps> = ({ setClassification, se
     return (
         <div className="flex flex-col items-center py-6 container mx-auto max-w-[1000px]">
             {!image ? (
-                <div className='border-dashed border-[8px] border-brandGreen rounded-lg px-[100px] md:px-32 lg:px-64 py-20 md:py-24 lg:py-32'>
-                    <button onClick={takePhoto} className="bg-brandDarkTeel text-white px-4 py-2 rounded-lg shadow-md hover:bg-brandLimeGreen transition duration-300">
+                <div className='border-dashed border-[8px] border-brandGray rounded-lg px-[70px] md:px-32 lg:px-64 py-20 md:py-24 lg:py-32'>
+                    <button onClick={takePhoto} className="teel-button">
                         Open Camera or Upload Image
                     </button>
                 </div>
@@ -163,7 +163,7 @@ const CameraComponent: React.FC<CameraComponentProps> = ({ setClassification, se
                     </div>
                     <button 
                         onClick={getCroppedImage} 
-                        className="bg-brandGreen text-white px-4 py-2 rounded-lg shadow-md hover:bg-brandBrown transition duration-300"
+                        className="teel-button"
                     >
                         Crop and Save
                     </button>

@@ -35,7 +35,7 @@ const PasturesPage: React.FC = () => {
             <div className="container mx-auto p-4">
                 <Hero 
                     title="My Groups" 
-                    imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Home_Hero.jpg"
+                    imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Pasture_Individual.webp"
                     imageAlt="Cattle grazing in a field"
                 />
                 <form onSubmit={handleAddPasture} className="mb-6 flex flex-col sm:flex-row items-center gap-4 bg-brandDarkTeel p-4 rounded-lg">
@@ -66,13 +66,13 @@ const PasturesPage: React.FC = () => {
                             </div>
                             <div className="flex justify-between items-center">
                                 <Link href={`/pastures/${pasture.id}`}>
-                                    <button className="bg-brandDarkTeel text-white py-2 px-4 rounded-lg border-brandDarkTeel border-2 hover:bg-white hover:border-2 hover:border-brandDarkTeel hover:text-black transition duration-300 ease-in-out text-center">
+                                    <button className="teel-button">
                                         View Group
                                     </button>
                                 </Link>
                                 <button 
                                     onClick={() => handleDeletePasture(pasture.id)}
-                                    className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300"
+                                    className="red-button"
                                 >
                                     Delete
                                 </button>

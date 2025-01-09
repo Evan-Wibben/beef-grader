@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet" />
 
                 {/* Favicon */}
-
+                <link rel="icon" href="https://bcs-app.s3.us-east-1.amazonaws.com/Favicon/BCS_Favicon.jpg" />
 
                 <Script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/pwa-elements/dist/index.js"></Script>
                 <title>BCS Grader</title>

@@ -72,13 +72,13 @@ const CowCard: React.FC<{
                 <div className="mt-4 flex justify-end space-x-2">
                     <button 
                         onClick={() => onExpand(cow.id)}
-                        className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brandDarkTeel hover:bg-[#456422]"
+                        className="teel-button"
                     >
                         {isExpanded ? 'Hide Details' : 'Show Details'}
                     </button>
                     <button 
                         onClick={() => onDeleteCow(cow.id)}
-                        className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
+                        className="red-button"
                     >
                         Remove from Pasture
                     </button>

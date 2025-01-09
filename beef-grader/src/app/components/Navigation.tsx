@@ -81,9 +81,9 @@ const Navigation: React.FC = () => {
                                       className="text-white text-lg font-medium relative py-1">
                                     {item}
                                     <span
-                                        className="absolute left-0 bottom-0 w-0 h-0 bg-white transition-all duration-300 group-hover:w-full"></span>
+                                        className="absolute left-0 bottom-0 w-0 h-[0.5px] bg-brandLimeGreen transition-all duration-300 group-hover:w-full"></span>
                                     <span
-                                        className="absolute right-0 top-0 w-0 h-0 bg-white transition-all duration=300 group-hover:w-full"></span>
+                                        className="absolute right-0 top-0 w-0 h-[0.5px] bg-brandLimeGreen transition-all duration=300 group-hover:w-full"></span>
                                 </Link>
                             </li>
                         ))}

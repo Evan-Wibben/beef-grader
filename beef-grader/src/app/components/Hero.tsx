@@ -24,7 +24,7 @@ const Hero: React.FC<HeroProps> = ({ title, imageSrc, imageAlt }) => (
         </div>
         <div className="block-container">
             <div className="relative bg-brandTeel text-white z-10 -mt-6 md:-mt-10 flex flex-col justify-center items-center text-center px-4 py-4 rounded-2xl">
-                <h1 className="text-4xl md:text-6xl">{title}</h1>
+                <h1 className="text-4xl md:text-6xl uppercase">{title}</h1>
             </div>
         </div>
         
