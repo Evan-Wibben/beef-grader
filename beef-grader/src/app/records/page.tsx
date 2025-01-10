@@ -25,19 +25,19 @@ const CowCard: React.FC<{
     function getClassificationColor(classification: string | null) {
         switch (classification) {
             case 'Beef 1-3':
-                return 'bg-[#dc2626]';
+                return 'bg-brandRed';
             case 'Beef 8-9':
-                return 'bg-[#dc262680]';
+                return 'bg-brandRed';
             case 'Beef 4':
-                return 'bg-[#ffce56]';
+                return 'bg-brandYellow';
             case 'Beef 7':
-                return 'bg-[#36a2eb]';
+                return 'bg-brandYellow';
             case 'Beef 5':
-                return 'bg-[#bbdd36]';
+                return 'bg-brandBlue';
             case 'Beef 6':
-                return 'bg-[#5a822b]';
+                return 'bg-brandLimeGreen';
             default:
-                return 'bg-[#808080]';
+                return 'bg-brandGray';
         }
     }
 

@@ -91,19 +91,19 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
     function getClassificationColor(classification: string | null) {
         switch (classification) {
             case 'Beef 1-3':
-                return '#dc2626';
+                return 'bg-brandRed';
             case 'Beef 8-9':
-                return '#dc262680';
+                return 'bg-brandRed';
             case 'Beef 4':
-                return '#ffce56';
+                return 'bg-brandYellow';
             case 'Beef 7':
-                return '#36a2eb';
+                return 'bg-brandYellow';
             case 'Beef 5':
-                return '#bbdd36';
+                return 'bg-brandBlue';
             case 'Beef 6':
-                return '#5a822b';
+                return 'bg-brandLimeGreen';
             default:
-                return '#808080';
+                return 'bg-brandGray';
         }
     }
     
@@ -118,51 +118,52 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
     }
     
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 block-container" ref={formRef}>
+        <div className="bg-brandLightBlue">
+            <form onSubmit={handleSubmit} className="py-8 block-container" ref={formRef}>
             {errorMessage && <div className="text-red-500">{errorMessage}</div>}
             
             {classification && (
-            <div className="flex items-center justify-center my-4">
-                <div className="relative w-32 h-32">
-                    <svg width="100%" height="100%" viewBox="0 0 200 200">
-                        <circle cx="100" cy="100" r="80" fill="none" stroke={getClassificationColor(classification)} strokeWidth="25" strokeLinecap="round" />
-                        <circle cx="100" cy="100" r="65" fill="white" />
-                    </svg>
-                    
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl">
-                        {getBCSScore(classification)}
+                <div className="flex items-center justify-center my-4">
+                    <div className="relative w-32 h-32">
+                        <svg width="100%" height="100%" viewBox="0 0 200 200">
+                            <circle cx="100" cy="100" r="80" fill="none" stroke={getClassificationColor(classification)} strokeWidth="25" strokeLinecap="round" />
+                            <circle cx="100" cy="100" r="65" fill="white" />
+                        </svg>
+                        
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl">
+                            {getBCSScore(classification)}
+                        </div>
                     </div>
-                    </div>
-            </div>
-        )}
+                </div>
+             )}
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Tag Number</label>
+                <label className="block text-md font-light text-brandGray ml-2">Tag Number *</label>
                 <input
                     type="text"
                     value={breed}
                     onChange={(e) => setBreed(e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-brandGreen focus:border-transparent outline-none transition duration-200 ease-in-out"
+                    className="form-input"
                     required
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Age (Optional)</label>
+                <label className="block text-md font-light text-brandGray ml-2">Age</label>
                 <input
                     type="number"
                     value={age}
                     onChange={(e) => setAge(e.target.value === '' ? '' : Number(e.target.value))}
-                    className="mt-1 block w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-brandGreen focus:border-transparent outline-none transition duration-200 ease-in-out"
+                    className="form-input"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Group (Optional)</label>
+                <label className="block text-md font-light text-brandGray ml-2">Group</label>
                 <select
                     value={pastureName}
                     onChange={(e) => setPastureName(e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                    className="form-input"
                 >
                     <option value="">Select a Group</option>
                     {pastures.map((pasture) => (
@@ -171,30 +172,30 @@ const CowDetails: React.FC<CowDetailsProps> = ({ onSubmit, classification, image
                 </select>
             </div>
 
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Notes (Optional)</label>
+            <div className="pb-2">
+                <label className="block text-md font-light text-brandGray ml-2">Notes</label>
                 <textarea
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-brandGreen focus:border-transparent outline-none transition duration-200 ease-in-out"
+                    className="form-input"
                     rows={4}
                 />
             </div>
-
-            <button 
-                type="submit"
-                className={`px-4 py-2 rounded-lg shadow-md transition duration-300 border-2 border-brandGray ${
+            
+            <div className="flex justify-center">
+                <button type="submit" className={`px-12 py-2 rounded-lg shadow-md transition duration-300 border-2 border-brandGray ${
                     isLoading || !classification || !breed
                         ? 'bg-brandGray text-white'
                         : 'bg-brandDarkTeel text-white hover:bg-transparent hover:text-brandDarkTeel !border-brandDarkTeel'
-                }`}
-                disabled={isLoading || !classification || !breed}
-            >
-                {isLoading ? 'Submitting...' : 'Submit'}
-                {(isLoading || !classification || !breed) && ''}
-            </button>
+                    }`}
+                    disabled={isLoading || !classification || !breed}
+                >
+                    {isLoading ? 'Submitting...' : 'Submit'}
+                    {(isLoading || !classification || !breed) && ''}
+                </button>
+            </div>
         </form>
+    </div>
     );
 };
-
 export default CowDetails;

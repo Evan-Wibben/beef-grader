@@ -139,12 +139,12 @@ const LineChart: React.FC<LineChartProps> = ({ cows }) => {
 };
 
 function getColorForBCS(score: number): string {
-    if (score >= 1 && score <= 3) return 'rgba(220, 38, 38, 1)';
-    if (score >= 4 && score <= 4.9) return 'rgba(255, 206, 86, 1)';
-    if (score >= 5 && score <= 5.9) return 'rgba(75, 192, 192, 1)';
-    if (score >= 6 && score <= 6.9) return 'rgba(90, 130, 43, 1)';
-    if (score >= 7 && score <= 7.9) return 'rgba(54, 162, 235, 1)';
-    if (score >= 8 && score <= 9) return 'rgba(220, 38, 38, .5)';
+    if (score >= 1 && score <= 3) return 'rgb(154, 41, 0)';
+    if (score >= 4 && score <= 4.9) return 'rgb(255, 208, 101)';
+    if (score >= 5 && score <= 5.9) return 'rgb(153, 210, 221)';
+    if (score >= 6 && score <= 6.9) return 'rgb(120, 199, 28)';
+    if (score >= 7 && score <= 7.9) return 'rgb(255, 208, 101)';
+    if (score >= 8 && score <= 9) return 'rgb(154, 41, 0)';
     return 'rgba(128, 128, 128, 1)';
 }
 

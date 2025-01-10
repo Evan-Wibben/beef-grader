@@ -61,21 +61,23 @@ const CowForm: React.FC = () => {
 
     return (
         <div className='bg-brandLightGreen'>
-            <div className="p-6">
+            <div>
                 <Hero 
-                    title="Create Record" 
+                    title="Create A Record" 
                     imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Pasture_Individual.webp"
                     imageAlt="Cattle grazing in a field"
                 />
-                <CameraComponent 
-                    setClassification={setClassification}
-                    setImagePath={setImagePath}
-                />
-                <CowDetailsClient 
-                    onSubmit={handleCowSubmit} 
-                    classification={classification}
-                    imagePath={imagePath}
-                />
+                <div>
+                    <CameraComponent 
+                      setClassification={setClassification}
+                      setImagePath={setImagePath}
+                    />
+                    <CowDetailsClient 
+                        onSubmit={handleCowSubmit} 
+                        classification={classification}
+                        imagePath={imagePath}
+                    />
+                </div>
             </div>
         </div>
 

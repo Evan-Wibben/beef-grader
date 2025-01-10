@@ -139,11 +139,15 @@ const CameraComponent: React.FC<CameraComponentProps> = ({ setClassification, se
     };
 
     return (
-        <div className="flex flex-col items-center py-6 container mx-auto max-w-[1000px]">
+        <div className="flex flex-col items-center pb-8">
             {!image ? (
-                <div className='border-dashed border-[8px] border-brandGray rounded-lg px-[70px] md:px-32 lg:px-64 py-20 md:py-24 lg:py-32'>
-                    <button onClick={takePhoto} className="teel-button">
-                        Open Camera or Upload Image
+                <div className="relative p-20 md:p-40 xl:px-72 bg-brandLightGray">
+                    <div className="absolute top-0 left-0 w-8 h-8 border-t-8 border-l-8 border-dashed border-brandTeel"></div>
+                    <div className="absolute top-0 right-0 w-8 h-8 border-t-8 border-r-8 border-dashed border-brandTeel"></div>
+                    <div className="absolute bottom-0 left-0 w-8 h-8 border-b-8 border-l-8 border-dashed border-brandTeel"></div>
+                    <div className="absolute bottom-0 right-0 w-8 h-8 border-b-8 border-r-8 border-dashed border-brandTeel"></div>
+                    <button onClick={takePhoto} className="teel-button text-lg">
+                        Camera/Gallery
                     </button>
                 </div>
             ) : (

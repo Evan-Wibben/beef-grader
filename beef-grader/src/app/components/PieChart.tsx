@@ -36,12 +36,12 @@ const PieChart: React.FC<PieChartProps> = ({ cows }) => {
     });
 
     const classificationColors: { [key: string]: string } = {
-        'Beef 1-3': 'rgba(220, 38, 38, 1)',
-        'Beef 4': 'rgba(255, 206, 86, 1)',
-        'Beef 5': 'rgba(187, 221, 54, 1)',
-        'Beef 6': 'rgba(90, 130, 43, 1)',
-        'Beef 7': 'rgba(54, 162, 235, 1)',
-        'Beef 8-9': 'rgba(220, 38, 38, .5)',
+        'Beef 1-3': 'rgb(154, 41, 0)',
+        'Beef 4': 'rgb(255, 208, 101)',
+        'Beef 5': 'rgb(153, 210, 221)',
+        'Beef 6': 'rgb(120, 199, 28)',
+        'Beef 7': 'rgb(255, 208, 101)',
+        'Beef 8-9': 'rgb(154, 41, 0)',
     };
 
     useEffect(() => {
