@@ -64,7 +64,7 @@ const CowForm: React.FC = () => {
             <div>
                 <Hero 
                     title="Create A Record" 
-                    imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Pasture_Individual.webp"
+                    imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Create_Entry.webp"
                     imageAlt="Cattle grazing in a field"
                 />
                 <div>

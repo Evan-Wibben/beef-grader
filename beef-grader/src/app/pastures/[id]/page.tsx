@@ -104,7 +104,7 @@ const CowCard: React.FC<{
                                 <p className="text-lg font-bold ml-2 text-brandDarkTeel">BCS SCORE: {getBCSScore(cow.bcs_score)}</p>
                             </div>
                         {cow.image_url && (
-                            <div className="w-full h-64 relative">
+                            <div className="w-full h-64 relative mb-4">
                                 <Image
                                     src={cow.image_url}
                                     alt={`Cow tag ${cow.breed}`}
@@ -207,7 +207,7 @@ const PasturePage: React.FC = () => {
         <div>
             <Hero 
                 title={pastureData.name}
-                imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Pasture_Individual.webp"
+                imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Individual_Group.webp"
                 imageAlt="Cattle in a pasture."
             />
                 <div className='md:flex justify-center gap-24 block-container'>

@@ -34,7 +34,7 @@ const PasturesPage: React.FC = () => {
         <div>
             <Hero 
                 title="My Groups" 
-                imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Pasture_Individual.webp"
+                imageSrc="https://bcs-app.s3.us-east-1.amazonaws.com/Hero+Images/BCS_Group_Hero.webp"
                 imageAlt="Cattle grazing in a field"
             />
             <div className="block-container pb-10">

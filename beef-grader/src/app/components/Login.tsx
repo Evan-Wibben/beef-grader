@@ -35,7 +35,7 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="p-6">
+        <div>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
@@ -63,7 +63,7 @@ const Login: React.FC = () => {
                 </div>
                 <button 
                     type="submit" 
-                    className={`bg-brandGreen text-white px-4 py-2 rounded ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`teel-button ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     disabled={isLoading} // Disable button while loading
                 >
                     {isLoading ? 'Logging in...' : 'Login'}
@@ -72,7 +72,7 @@ const Login: React.FC = () => {
             {errorMessage && <p className="mt-4 text-red-500">{errorMessage}</p>} {/* Display error message */}
             <p className="mt-4">
                      {`Don't have an account? `}
-                 <a href="/register" className="text-blue-500 hover:underline">
+                 <a href="/register" className="text-brandRed hover:underline">
                       Create one here
                 </a>
             </p>

@@ -26,7 +26,7 @@ const CardButton: React.FC<CardButtonProps> = ({ href, children, className = '' 
 };
 
 const SignOutButton: React.FC<SignOutButtonProps> = ({ href, onClick, children, className = '' }) => {
-  const baseStyle = 'w-full bg-white text-brandGray px-4 py-2 rounded-md text-lg border-2 border-white hover:bg-transparent hover:border-2 hover:border-brandLimeGreen hover:text-white transition duration-300 ease-in-out font-bold text-center cursor-pointer';
+  const baseStyle = 'w-full bg-white text-brandDarkTeel px-4 py-2 rounded-md text-lg border-2 border-white hover:bg-transparent hover:border-2 hover:border-brandLimeGreen hover:text-white transition duration-300 ease-in-out font-bold text-center cursor-pointer';
   const buttonStyle = `${baseStyle} ${className}`;
 
   return (

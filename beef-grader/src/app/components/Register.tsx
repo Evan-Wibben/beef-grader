@@ -43,7 +43,7 @@ const Register: React.FC = () => {
                 required
                 className="border p-2 rounded w-full mb-4"
             />
-            <button type="submit" className="bg-brandGreen text-white px-4 py-2 rounded">
+            <button type="submit" className="teel-button">
                 Create Account
             </button>
         </form>
